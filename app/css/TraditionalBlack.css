@@ -1,0 +1,133 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	background-color: black;
+	color: white;
+	font-size: large;
+}
+
+div#log {
+	position: absolute;
+	top: 1.5em;
+	bottom: 4em;
+	left: 1.5em;
+	width: 70%;
+	/*height: 100%;*/
+	overflow-y:scroll;
+	background-color: black;
+	color: white;
+	/*margin: 1.5em;*/
+	padding: .5em;
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	font-family: 'Alike', Georgia, serif;
+}
+
+
+div#actionBar {
+	position: absolute;
+	bottom: 0;
+	left: 3em;
+	width: 70%;
+	margin: none; 
+	
+}
+
+input#actionInput {
+	height: 2.5em;
+	background-color: black;
+	color: white;
+	-webkit-border-radius: 20px;
+	border-radius: 20px; 
+	font-family: 'Alike', serif;
+	width: 100%;
+}
+
+
+
+div#contains {
+	position: absolute;
+	right: 10px;
+	top: 1.5em;
+	width: 25%;
+}
+
+div#inventoryDiv {
+	position: absolute;
+	bottom: 0;
+	right: 10;
+	width: 25%;
+	margin: 0;
+}
+
+div.helperList {
+	margin: 0;
+	padding: 0;
+	color: white;
+	background-color: black;
+	-webkit-border-top-left-radius: 20px;
+	-webkit-border-top-right-radius: 20px;
+	-moz-border-radius-topleft: 20px;
+	-moz-border-radius-topright: 20px;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	margin-bottom: 1em;
+}
+
+
+/* But contains should have sticking to it's buttom and grow upward the inventory,
+ * and growing down from the top
+ */
+
+.header {
+	text-align: center;
+	background-color: black;	
+	color: white;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+
+div.helperList ul {
+	margin: 0;
+}
+/* Fonts for location headers, speech, and when you pick up an item say you drop /item name/ in white or yellow or someething. */
+span.speech {
+	/*Font*/
+	font-family: 'Patrick Hand', cursive;
+}
+
+
+.location {
+	font-family: 'Cinzel', serif;
+}
+
+div.location {
+	margin-top: 1em;
+	color: white;
+}
+
+div#appHeader {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+div#appMenu {
+	position: absolute;
+	top: 0;
+	right: 0;	
+}
+
+div#appHeader, div#appMenu {
+	text-align: center;
+	padding-left: 1em;
+	padding-right: 1em;
+	background-color: black;	
+	color: white;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+
+}
