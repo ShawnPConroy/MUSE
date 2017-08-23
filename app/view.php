@@ -12,7 +12,7 @@ if( $_REQUEST['login'] ) {
 <html>
 
 <head>
-	<title>World Builder</title>
+	<title>MUSE</title>
 	<script type="text/javascript" src="javascript/userInterface.js"></script>
 	<script type="text/javascript" src="javascript/ajax.js"></script>
 	<link type="text/css" rel="stylesheet" href="css/style.css" />

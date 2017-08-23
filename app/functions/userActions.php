@@ -1,9 +1,12 @@
 <?php
 
-/**
+/*
  * Actions you would expect common users to issue: look, drop, examine, move, say take.
+ *
+ * This file is part of MUSE.
+ *
+ * @author	Shawn P. Conroy
  */
-
 
 /**
  * Add a full update sending the client application all information to display
@@ -11,6 +14,7 @@
  * 
  * @param string $location the location
  * @param boolean $silent
+ * @return void
  */
 function userActionFullUpdate( $location= null, $silent = false ) {
 	if( $location == null ) {
@@ -116,7 +120,8 @@ function userActionLook( $actionRequest ) {
 /**
  * Drop object in action request.
  * 
- * @param unknown $actionRequest
+ * @param string $actionRequest User requestion, starting with drop.
+ * @return void
  */
 function userActionDrop( $actionRequest ) {
 	$itemName = substr( $actionRequest, 5 );
@@ -137,7 +142,7 @@ function userActionDrop( $actionRequest ) {
 /**
  * Examine object in action request.
  * 
- * @param unknown $actionRequest
+ * @param unknown $actionRequest User request starting with examine.
  */
 function userActionExamine( $actionRequest ) {
 	$actionKeyword = strtok( $actionRequest, " " );
@@ -173,9 +178,11 @@ function userActionExamine( $actionRequest ) {
 /**
  * Moves user to location in action request.
  * 
- * Returns true if exit is found, exit is not linked, multiple exits
+ * @param $actionRequest User's request, starting with go or move.
+ *
+ * @return true if exit is found, exit is not linked, multiple exits
  *   found, or no exit found.
- * Returns false if actionRequest didn't not include the move command
+ * @return false if actionRequest didn't not include the move command
  *   and no exit match was found. (I.e., user didn't type in a command
  *   and we were trying to see if they just typed in an exit name.
  */
@@ -228,7 +235,8 @@ function userActionMove( $actionRequest ) {
 /**
  * Say text in user request.
  * 
- * @param unknown $actionRequest
+ * @param string $actionRequest The user request, starting with " or say.
+ * @return void
  */
 function userActionSay( $actionRequest ) {
 	$actionKeyword = strtok( $actionRequest, " " );
@@ -245,7 +253,8 @@ function userActionSay( $actionRequest ) {
 /**
  * Take object in user request in to inventory.
  * 
- * @param unknown $actionRequest
+ * @param string $actionRequest User action request, starting with take.
+ * @return void
  */
 function userActionTake( $actionRequest ) {
 	$itemName = substr( $actionRequest, 5 );
@@ -274,12 +283,12 @@ function userActionTake( $actionRequest ) {
  * 
  * @param unknown $actionKeyword
  * @param unknown $actionRequest
- * @return boolean
+ * @return boolean Was a user action attempted.
  */
 function userAction( $actionKeyword, $actionRequest ) {
 	addServerMessageToXML("ActionKeyword: $actionKeyword.");
 	$result = true;
-	if( $actionKeyword == "look" ) {
+	if( $actionKeyword == "look") {
 		userActionLook( $actionRequest );
 	} else if( $actionKeyword == "say" || $actionKeyword == "\\\"" ) {
 		userActionSay( $actionRequest );

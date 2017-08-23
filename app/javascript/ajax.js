@@ -1,7 +1,21 @@
+/*
+ * Functions that make requests and process responses.
+ *
+ * This file is part of MUSE.
+ *
+ * @author	Shawn P. Conroy
+ */
+ 
 var xmlhttp;
 var waitingForResponse = false;
 var waitingAction = null;
 
+/**
+ * Creates an XML HTTP request with the user action.
+ * @param {string} url Where to send the request.
+ * @param {string} action The user's action request.
+ * @param {requestCallBack} cfunc Return event processing function.
+ */
 function sendAction(url,action,cfunc)
 {
 	if (window.XMLHttpRequest) {
@@ -17,6 +31,12 @@ function sendAction(url,action,cfunc)
 	xmlhttp.send(action);
 }
 
+/**
+ * Processes server messages. Pulls server messages from the response.
+ * Performs actions from the server, such as clearing the helper lists.
+ * Displays any debug messages to the log / story, if debugging is on.
+ * @param {string} response The full response from the server.
+ */
 function processResponseServerMessages( response ) {
 	debug("Processing server responeses...");
 	var messages = response.documentElement.getElementsByTagName("serverMessage");
@@ -29,7 +49,7 @@ function processResponseServerMessages( response ) {
 			if ( messages[messageCounter].firstChild.nodeValue == "clear" ) {
 				uiClearLists();
 			} else {
-				serverDebug("Incomprehensible server messages: " + messages[messageCounter].firstChild.nodeValue);
+				serverDebug("<strong>Server message</strong>: " + messages[messageCounter].firstChild.nodeValue);
 			}
 		}
 	} else {
@@ -39,80 +59,11 @@ function processResponseServerMessages( response ) {
 	return;
 }
 
-function processResponseUsers( response ) {
-	
-	var newUsers = response.documentElement.getElementsByTagName("user");
-	
-	if(newUsers) {
-		// Get the objects list
-		var userList= document.getElementById('users');
-
-		// Add new objects
-		debug("Number of users: " + newUsers.length);
-	
-		for( i=0; i<newUsers.length; i++ ) {
-			// Add to list, first child is always name
-			debug("Adding user: " + newUsers[i].firstChild.nodeValue);
-			var newUser = document.createElement('li');
-			newUser.innerHTML = newUsers[i].firstChild.nodeValue
-			userList.insertBefore( newUser, userList.firstChild );
-		}
-	} else {
-		debug("No players to process");
-	}
-	
-	return;
-}
-
-function processResponseObjects( response ) {
-	
-	var newObjects = response.documentElement.getElementsByTagName("object");
-
-	if (newObjects != null) {
-		// Get the objects list
-		var objectList = document.getElementById('objects');
-		
-		// Add new objects
-		debug("Number of objects: " + newObjects.length);
-		
-		for( i=0; i<newObjects.length; i++ ) {
-			// Add to list, first child is always name
-			debug("Adding object: " + newObjects[i].firstChild.nodeValue);
-			var newObject = document.createElement('li');
-			newObject.innerHTML = newObjects[i].firstChild.nodeValue
-			objectList.insertBefore( newObject, objectList.firstChild );
-		}
-	} else {
-		debug("No objects to process");
-	}
-	return;
-}
-
-function processResponseExits( response ) {
-	
-	var newExits = response.documentElement.getElementsByTagName("exit");
-	
-	if( newExits ) {
-
-		// Add new objects
-		debug("Number of exits: " + newExits.length);
-		// Get the objects list
-		var exitList = document.getElementById('exits');
-		
-		for( i=0; i<newExits.length; i++ ) {
-			// Add to list, first child is always name
-			debug("Adding exit: " + newExits[i].firstChild.nodeValue);
-			var newExit = document.createElement('li');
-			newExit.innerHTML = newExits[i].firstChild.nodeValue;
-			exitList.insertBefore( newExit, exitList.firstChild );
-		}
-	} else {
-		debug("No exit to process");
-	}
-	
-	return;
-}
-
+/**
+ * Grabs the location and updates the helper list header with current location.
+ * @param {array} Locations XML response from server.
+ * @return void
+ */
 function processResponseLocation( locations ) {
 	
 	if (locations && locations.length) {
@@ -129,6 +80,12 @@ function processResponseLocation( locations ) {
 	return;
 }
 
+/**
+ * Add items to specified helper list.
+ * This really seems like it's UI stuff. Maybe helper lists should be in their on JS file.
+ * @param {string} listID The HTML ID of the list to add items to.
+ * @param {xml} XML listing of one type to add to specified list.
+ */
 function processResponseAddToList( listID, items) {
 	debug("Adding to list: "+listID);
 
@@ -151,6 +108,11 @@ function processResponseAddToList( listID, items) {
 	return;
 }
 
+/**
+ * Processes users, objects, inventory and exist, also location name,
+ * for the helper sidebar.
+ * @param {xml} response The XML Response from the server.
+ */
 function processResponseEntities( response ) {
 	var users = response.documentElement.getElementsByTagName("user");
 	var objects = response.documentElement.getElementsByTagName("object");
@@ -166,6 +128,10 @@ function processResponseEntities( response ) {
 	processResponseLocation( locations ); // This shouldn't be in this function, move back 1 level 
 }
 
+/**
+ * Adds standard game responses/logs to the log box (story box).
+ * @param {xml} response XML response from server
+ */
 function processResponseLogs( response ) {
 	
 	
@@ -188,17 +154,25 @@ function processResponseLogs( response ) {
 	return;
 }
 
+/**
+ * Hand off the response to every function that processes it for info.
+ * @param {response} Server's response.
+ */
 function processResponse( response ) {
 	processResponseServerMessages( response );
-	//processResponseUsers( response );
-	//processResponseObjects( response );
-	//processResponseExits( response );
 	processResponseEntities( response );
 	processResponseLocation( response );
 	processResponseLogs( response);
 	return;
 }
 
+/**
+ * Function to handle a user action request. It displays the 
+ * requestion to the log / story box, sends it to the server
+ * and prepares for next action.
+ *
+ * @param {string} actionString The user's command/request.
+ */
 function action( actionString ) {
 	if( !waitingForResponse ) {
 		userAction( actionString );
@@ -211,21 +185,28 @@ function action( actionString ) {
 		
 }
 
+/**
+ * Quietly sense a command to the server and processes the response.
+ * Wait, will this properly update the helper list for new items dropped
+ * in location?
+ *
+ * @param {string} actionString The command/request.
+ */
 function silentAction( actionString ) {
-		waitingForResponse = true;
-		debug("AJAX TRUE");
-		sendAction("request.php",actionString,function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				if (xmlhttp.responseXML == null ) debug("Got null XML response.");
-				debug( "Got this text response: " + xmlhttp.responseText );
-				processResponse(xmlhttp.responseXML);
-				waitingForResponse=false;
-				if( waitingAction ) {
-					temp = waitingAction;
-					waitingAction = null;
-					action( temp );
-				}
+	waitingForResponse = true;
+	debug("AJAX TRUE");
+	sendAction("request.php",actionString,function() {
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			if (xmlhttp.responseXML == null ) debug("Got null XML response.");
+			debug( "Got this text response: " + xmlhttp.responseText );
+			processResponse(xmlhttp.responseXML);
+			waitingForResponse=false;
+			if( waitingAction ) {
+				temp = waitingAction;
+				waitingAction = null;
+				action( temp );
 			}
-		});
+		}
+	});
 
 }

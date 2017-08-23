@@ -25,6 +25,38 @@ You must have PHP and MySQL on your server. Users must have a web browser with H
 
 You should now be able to go to the app, create a user, and sign in.
 
+## Commands
+
+### Explore Commands (server)
+
+* `look` Look around your current location. (Location object listing.) 
+* `say` (`"`) say something to everyone in your location.
+* `go` (``goto`, `go to`, `move`) Move player to new location.
+* `take` Take object from location to inventory.
+* `drop` Drop object from inventory to location.
+
+### Build commands (server)
+* `examine` Dump item info.
+* `@create` Create object.
+* `@chown` Change object owner.
+* `@destroy` Delete object.
+* `@describe` (`@desc`) Set object description.
+* `@dig` Create a new room and link.
+* `@name` Change object name.
+* `@open` Create an exit.
+* `@link` Link an exit to a room.
+* `@set` Set extended info on object. Eg. success or osuccess)
+
+### Debugging commands (client)
+
+* debugon Turns on JavaScript debug mode
+* debugoff Turns off JavaScript debug mode
+* serverdebugon Turns on sever processing debugging
+* serverdebugoff Turns off sever processing debugging
+* debugall
+* debugall Turns on all debugging
+* debugnone Turns off all debugging
+
 ## History
 
 In university I toyed with someone's PennMUSH system and thought it was very amusing. It's something I kept coming back to year after year. In 2012/2013 I started to create MUSE. I went through several iterations of the name (World Builder, HoloPage, phpMUSH, HoloText) before settling on MUSE.

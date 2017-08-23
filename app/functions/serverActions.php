@@ -1,6 +1,10 @@
 <?php
 /**
  * Server actions. Doesn't really do anything.
+ *
+ * This file is part of MUSE.
+ *
+ * @author	Shawn P. Conroy
  */
 
 /**

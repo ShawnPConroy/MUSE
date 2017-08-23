@@ -1,9 +1,11 @@
 <?php
 
-/**
- * worl object manipulation/read function.
- * 
+/*
  * Functions that process information about/for objects.
+ *
+ * This file is part of MUSE.
+ *
+ * @author Shawn P. Conroy
  */
 
 
@@ -14,8 +16,8 @@
  *	as list. Example, $location = "1, 5, 19" or "5".
  * option: Set $location = true for a full DB search
  * @param string $id Identifyer of object: either the ID or the name of the object.
- * @param $type: Optionally limit search to $type.
- * @param $silent: set to true to supress response to user.
+ * @param string $type Optionally limit search to $type.
+ * @param boolean $silent set to true to supress response to user.
  * @return array Single entity or false.
  */
 function getEntity( $id, $location = null, $type = null, $silent = false ) {
@@ -96,9 +98,12 @@ function getEntity( $id, $location = null, $type = null, $silent = false ) {
 
 
 /**
- * getExtendedData takes the $entity and inserts to the array
- *	extended data about the object to the original array
- *	in the calling function.
+ * Takes the $entity and inserts to the array
+ * extended data about the object to the original array
+ * in the calling function.
+ *
+ * @param array $entity An array representing an in-world object
+ * @return array An array representing an in-world object with all fields
  */
 function getExtendedData( &$entity ) {
 	global $wb;
@@ -178,7 +183,7 @@ function passesLock( $entity ) {
  * @param unknown $exit
  * @return Ambigous <boolean, unknown>
  */
-function moveUser( $exit) {
+function moveUser($exit) {
 	global $wb; // App settings & database
 	
 	$user['id'] = $_SESSION['userID'];

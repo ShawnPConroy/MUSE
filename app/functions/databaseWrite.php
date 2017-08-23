@@ -1,6 +1,10 @@
 <?php
-/**
+/*
  * Functions that write to the database.
+ *
+ * This file is part of MUSE.
+ *
+ * @author	Shawn P. Conroy
  */
 
 /**
@@ -9,7 +13,7 @@
  * @param String $name Name of object
  * @param int $location Location ID of the object (usually user) that this object belongs to, or null for rooms
  * @param String $type Object type
- * @return boolean object id if the object was created
+ * @return int object id if the object was created
  * @return boolean false if creation failed
  */
 function createEntity( $name, $location, $type ) {
@@ -38,10 +42,10 @@ function createEntity( $name, $location, $type ) {
  * Creates an exit object, optionally: links, creates return entrance object, links that back.
  *
  * @param int $locationID
- * @param unknown $exitName
+ * @param string $exitName
  * @param string $toID
  * @param string $entranceName
- * @return boolean
+ * @return boolean Creation success
  */
 function createExit( $locationId, $exitName, $toId = null, $entranceName = null ) {
 	global $wb; // App settings & database
@@ -69,9 +73,9 @@ function createExit( $locationId, $exitName, $toId = null, $entranceName = null 
 /**
  * Change the ownership field of $entityId object.
  * 
- * @param unknown $entityId
- * @param unknown $newOwnerId
- * @return unknown Query result
+ * @param string $entityId The ID of the object to change ownership of.
+ * @param string $newOwnerId The new owner of the object.
+ * @return mixed Query result
  */
 function changeOwner( $entityId, $newOwnerId ) {
 	global $wb; // App settings & databae
@@ -85,10 +89,13 @@ function changeOwner( $entityId, $newOwnerId ) {
 	return $result;
 }
 /**
- * Deletes object.
+ * Deletes object and extended info.
  *
- * @param int $entity id of entity to be deleted
- * @return unknown result of query
+ * This should probably delete things that link to it (exits)
+ * as well as things contained by it (inventory/contents).
+ *
+ * @param array $entity Entity to be deleted
+ * @return mixed result of query
  */
 function destroyEntity( $entity ) {
 	global $wb; // App settings & database
@@ -112,26 +119,26 @@ function destroyEntity( $entity ) {
 * Moves world object to the users location (inventory). Also adds appropriate
 * drop log and client response.
 *
-* @param int $entity id of entity to drop
-* @return unknown result of query
+* @param array $entity Entity to drop.
+* @return mixed Result of query.
 */
 function dropEntity( $entity ) {
-global $wb; // App settings & database
-
-if( $result = moveEntity( $entity, $_SESSION['location'] ) ) {
-if( isset( $entity['drop'] ) ) {
-addLogToXML( $entity['drop'] );
-} else {
-addLogToXML("Dropped ". $entity['name'] );
-	}
-
-	if ( isset( $entity['odrop'] ) ) {
+	global $wb; // App settings & database
+	
+	if( $result = moveEntity( $entity, $_SESSION['location'] ) ) {
+		if( isset( $entity['drop'] ) ) {
+			addLogToXML( $entity['drop'] );
+		} else {
+			addLogToXML("Dropped ". $entity['name'] );
+		}
+		
+		if ( isset( $entity['odrop'] ) ) {
 			insertLog("user", $_SESSION['userID'], $_SESSION['location'],
 			$_SESSION["username"]." ".$entity['odrop']);
-	} else {
-	insertLog("user", $_SESSION['userID'], $_SESSION['location'],
-			$_SESSION['username']." dropped ". $entity['name'] );
-	}
+		} else {
+			insertLog("user", $_SESSION['userID'], $_SESSION['location'],
+				$_SESSION['username']." dropped ". $entity['name'] );
+		}
 	}
 
 	return $result;
@@ -146,9 +153,10 @@ addLogToXML("Dropped ". $entity['name'] );
  * can hear.
  *
  * @param String $type Usually 'user', as in log message for and about users. Rather than 'server' for admin logs?
- * @param int $userID User ID tied to the log
- * @param int $location Location ID for that the log is relevant for
- * @param String $message The message, including droped, says taken, et cetera
+ * @param int $userID User ID tied to the log.
+ * @param int $location Location ID for that the log is relevant for.
+ * @param String $message The message, including droped, says taken, et cetera.
+ * @return mixed Query result.
  */
 function insertLog( $type, $userID, $location, $message ) {
 	global $wb; // App settings & database
@@ -157,11 +165,14 @@ function insertLog( $type, $userID, $location, $message ) {
 	(type, user_id, location, message) values ( '$type', '$userID', '$location', '$message' );";
 	addServerMessageToXML($sql);
 	return $wb['db']->query( $sql );
-
 }
 
 /**
  *  linkExit links exit $exitId to $toID
+ *
+ * @param string $exitId The ID of the exit being linking form.
+ * @param string $toId The ID of the exit being linking to.
+ * @return mixed Query result.
  */
 
 function linkExit(  $exitId, $toID ) {
@@ -175,9 +186,9 @@ function linkExit(  $exitId, $toID ) {
 /**
  * Changes object/entity location to the new location.
  *
- * @param int $entity id of the object to move (eg., item or player)
- * @param int $locationId id of the location to move to
- * @return query result
+ * @param int $entity id of the object to move (eg., item or player).
+ * @param int $locationId id of the location to move to.
+ * @return Query result.
  */
 function moveEntity( $entity, $locationId ) {
 	global $wb; // App settings & database
@@ -194,23 +205,29 @@ function moveEntity( $entity, $locationId ) {
 
 /**
  * Sets the a field (eg. description) of an entity
+ *
+ * @param string $field The field to set.
+ * @param string $entityID The entity to set the field on.
+ * @param string $value The value to set the field to.
+ * @return mixed mysqli::query result
  */
 function setEntityField( $field, $entityID, $value) {
 	global $wb; // App settings & database
 
-	$result = $wb['db']->query("UPDATE {$wb['DB_PREFIX']}_entities
-	SET $field = '$value'
-	WHERE id = $entityID;");
+	$result = $wb['db']->query(
+		"UPDATE {$wb['DB_PREFIX']}_entities
+		SET $field = '$value'
+		WHERE id = $entityID;");
 	return $result;
 }
 
 /**
  * Set extended data (example, lock).
  *
- * @param unknown $entity
- * @param unknown $name
- * @param unknown $value
- * @return unknown
+ * @param array $entity Entity to edit.
+ * @param string $name Field name to edit.
+ * @param string $value Field value to set to.
+ * @return mixed Query result.
  */
 function setExtendedData( $entity, $name, $value ) {
 	global $wb;
@@ -252,26 +269,26 @@ function setExtendedData( $entity, $name, $value ) {
 * Move object to user's inventory (i.e., to the user object). Also,
 * adds appropriate messages to log and client response.
 *
-* @param unknown $entity
-* @return unknown
+* @param array $entity Entity to move.
+* @return mixed Query result.
 */
 function takeEntity( $entity ) {
 	global $wb; // App settings & database
 
 	if( $result = moveEntity( $entity, $_SESSION['userID'] ) ) {
-	if( isset( $entity['success'] ) ) {
-	addLogToXML( $entity['success'] );
+		if( isset( $entity['success'] ) ) {
+			addLogToXML( $entity['success'] );
 		} else {
-	addLogToXML("You took ". $entity['name'] );
-	}
+			addLogToXML("You took ". $entity['name'] );
+		}
 
-			if ( isset( $entity['osuccess'] ) ) {
+		if ( isset( $entity['osuccess'] ) ) {
 			insertLog("user", $_SESSION['userID'], $_SESSION['location'],
 			$_SESSION['username']." ".$entity['osuccess']);
-			} else {
+		} else {
 			insertLog("user", $_SESSION['userID'], $_SESSION['location'],
 			$_SESSION['username']." took ". $entity['name'] );
-			}
+		}
 	}
 	return $result;
 }

@@ -1,5 +1,11 @@
 <?
-
+/* Process user account requestion. Login and Logout and Create.
+ *
+ * This file is part of MUSE.
+ *
+ * @author	Shawn P. Conroy
+ */
+ 
 /**
  * Create user account.
  * 
@@ -38,13 +44,6 @@ function userAccountLogin() {
 			AND u.password = MD5(  '$password' ) 
 		LIMIT 1"
 		);
-	/*echo "SELECT o.name, o.id, u.password, o.location
-		FROM  `{$wb['DB_PREFIX']}_entities` AS o
-		LEFT JOIN  `{$wb['DB_PREFIX']}_users` AS u ON o.id = u.entity_id
-		WHERE o.type =  'user'
-			AND o.name =  '$username'
-			AND u.password = MD5(  '$password' ) 
-		LIMIT 1"; */
 	
 	if( $result && $result->num_rows ) {
 		$user = $result->fetch_assoc();

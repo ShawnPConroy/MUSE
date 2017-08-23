@@ -1,6 +1,10 @@
 <?php
 /**
  * Functions for creating the response XML to send to the client.
+ *
+ * This file is part of MUSE.
+ *
+ * @author	Shawn P. Conroy
  */
 
 
@@ -28,12 +32,12 @@ function responseFinish() {
 
 /**
  * Adds the world entities in $location to the XML response to client.
- * @param int $location the location ID to get object from
- * @param string $tag the XML node type
+ * @param string $location The location ID to get object from.
+ * @param string $tag The XML node type.
+ * @return void
  */
 function addLocationEntitiesToResponse( $location, $tag = null ) {
 	global $wb; // App settings & database
-	
 	
 	$entities = $wb['db']->query("SELECT * FROM {$wb['DB_PREFIX']}_entities WHERE location = {$location};");
 	while ( $entities && $entity = $entities->fetch_assoc() ) {
@@ -52,8 +56,8 @@ function addLocationEntitiesToResponse( $location, $tag = null ) {
 }
 
 /**
- * Add location to XML response to client.
- * @param unknown $location
+ * Adds location name element to XML response to client.
+ * @param string $location Location name.
  */
 function addLocationToResponse( $location ) {
 	$location = getLocation( $location );
@@ -85,7 +89,7 @@ function addLogToXML ($message) {
 }
 
 /**
- * Debug text to XML response.
+ * Add debug text to XML response.
  * 
  * @param unknown $message
  */

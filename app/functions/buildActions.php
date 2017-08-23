@@ -1,10 +1,21 @@
 <?
+/*
+ * Functions that write to the database.
+ *
+ * This file is part of MUSE.
+ *
+ * @author	Shawn P. Conroy
+ */
 
 /**
- * Create object.
+ * Process user's create request. ("@create Object Name")
+ *
+ * Cuts off the @create, and creates and object with that name,
+ * in user's inventory. Adds action to user log.
  * 
- * User is creating an object, in form
- *	@create Object Name
+ * @param string $actionRequest The user's request, starting with @create.
+ * @returns void
+ * 
  */
 function userActionCreate( $actionRequest ) {
 	$name = substr( $actionRequest, 8 );
@@ -19,8 +30,11 @@ function userActionCreate( $actionRequest ) {
 /**
  * Changes the ownership field of the object.
  * 
- * @param String $item item to change ownership's name or ID
- * @param String $newOwner name or ID of the new owner.
+ * Cut off the @chown, parse out the object name and new owner's name.
+ * Then get info and call changeOwner(). Update user log.
+ *
+ * @param string $actionRequest The user request starting with @chown.
+ * @return void
  */
 function userActionChangeOwner( $actionRequest ) {
 	$actionKeyword = strtok( $actionRequest, " " ); // @chown followed by a space
@@ -42,7 +56,6 @@ function userActionChangeOwner( $actionRequest ) {
 		addLogToXML("You don't own that.");
 	}
 	
-	/* Execute! */
 }
 
 /**
@@ -52,6 +65,12 @@ function userActionChangeOwner( $actionRequest ) {
  *	@describe object name = Object's description.
  * or
  *	@desc object name = Object's description.
+ *
+ * Tokenize the string and set the description field.
+ * Add success to user log.
+ *
+ * @param string $actionRequest The user request starting with @desc.
+ * @return void
  */
 function userActionDescribe( $actionRequest ) {
 	$actionKeyword = strtok( $actionRequest, " " ); // Is either @desc or @describe followed by a space
@@ -90,8 +109,11 @@ function userActionDescribe( $actionRequest ) {
 /**
  * Creates a new room.
  * 
- * @param unknown $actionRequest
- * @return int room id
+ * Tokenizes the string, and creates a new room, and exit, and links.
+ * between them, and adds it to the user's log.
+ *
+ * @param string $actionRequest The user request, of form "@dig exit name = exit location, return exit" name (I think).
+ * @return string room id number
  */
 function userActionDig( $actionRequest ) {
 	$actionKeyword = strtok( $actionRequest, " " );
@@ -122,9 +144,10 @@ function userActionDig( $actionRequest ) {
 }
 
 /**
- * Destroy object.
+ * Destroy object. Searching for object by name, and destroys it.
  * 
- * @param unknown $actionRequest
+ * @param string $actionRequest User action "@destroy object name".
+ * @return void
  */
 function userActionDestroy( $actionRequest ) {
 	$actionKeyword = strtok( $actionRequest, " " );
@@ -147,9 +170,11 @@ function userActionDestroy( $actionRequest ) {
 }
 
 /**
- * Create an exit between two rooms.
+ * Links an exit to a room.
  * 
- * @param unknown $actionRequest
+ * Tokenizes the string, finds both exits and links
+ * @param string $actionRequest The user's action requestion, starting with @link.
+ * @return void
  */
 function userActionLink( $actionRequest ) {
 	$actionKeyword = strtok( $actionRequest, " " );
@@ -180,7 +205,8 @@ function userActionLink( $actionRequest ) {
 /**
  * Rename an object.
  * 
- * @param unknown $actionRequest
+ * @param string $actionRequest The user request starting with @name.
+ * @return void
  */
 function userActionName( $actionRequest ) {
 	addServerMessageToXML("Renaming...");
@@ -207,7 +233,8 @@ function userActionName( $actionRequest ) {
 /**
  * Create an exit. (Which goes nowhere.)
  * 
- * @param unknown $actionRequest
+ * @param string $actionRequest The user request, starting with @open.
+ * @return void
  */
 function userActionOpen( $actionRequest ) {
 	$actionKeyword = strtok( $actionRequest, " " );
@@ -238,7 +265,8 @@ function userActionOpen( $actionRequest ) {
 /**
  * Creative user requests, the build, destroy et cetera actions.
  * 
- * @param unknown $actionRequest
+ * @param string $actionRequest The user's request.
+ * @return void
  */
 
 Function userBuildActions( $actionRequest ) {
@@ -273,7 +301,5 @@ Function userBuildActions( $actionRequest ) {
 			setExtendedData( $entity, substr($actionKeyword,1) , $value );
 		}
 	}
-		
-
 }
 ?>
