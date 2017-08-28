@@ -109,10 +109,12 @@ function userActionDescribe( $actionRequest ) {
 /**
  * Creates a new room.
  * 
- * Tokenizes the string, and creates a new room, and exit, and links.
+ * `@dig <room name> [= <exit name>;<exit alias>*,<return exit name>;<exit alias>*]`
+ *
+ * Tokenizes the string, and creates a new room. If two exists listed, creates both exits and links them.
  * between them, and adds it to the user's log.
  *
- * @param string $actionRequest The user request, of form "@dig exit name = exit location, return exit" name (I think).
+ * @param string $actionRequest The user request, of form `@dig <room name> [= <exit name>;<exit alias>*,<exit name>;<exit alias>*]` name (I think).
  * @return string room id number
  */
 function userActionDig( $actionRequest ) {

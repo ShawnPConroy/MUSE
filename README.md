@@ -27,11 +27,13 @@ You should now be able to go to the app, create a user, and sign in.
 
 ## Commands
 
+For the commands that have been included in MUSE, I have linked to a larger description of the command from a [PennMUSH command listing](http://dynamix.xidus.net/penncmd.htm#@dig).
+
 ### Explore Commands (server)
 
 * `look` Look around your current location. (Location object listing.) 
 * `say` (`"`) say something to everyone in your location.
-* `go` (``goto`, `go to`, `move`) Move player to new location.
+* `go` (`goto`, `go to`, `move`) Move player to new location.
 * `take` Take object from location to inventory.
 * `drop` Drop object from inventory to location.
 
@@ -41,7 +43,7 @@ You should now be able to go to the app, create a user, and sign in.
 * `@chown` Change object owner.
 * `@destroy` Delete object.
 * `@describe` (`@desc`) Set object description.
-* `@dig` Create a new room and link.
+* `@dig <room name> [= <exit name>;<exit alias>*,<return exit name>;<exit alias>*]`<br/>Create a new room and link. [See @dig description](http://dynamix.xidus.net/penncmd.htm#@dig)
 * `@name` Change object name.
 * `@open` Create an exit.
 * `@link` Link an exit to a room.
