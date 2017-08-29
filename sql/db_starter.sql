@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 29, 2017 at 12:35 PM
+-- Generation Time: Aug 29, 2017 at 12:41 PM
 -- Server version: 5.5.51-38.2
 -- PHP Version: 5.6.20
 
@@ -35,6 +35,13 @@ CREATE TABLE IF NOT EXISTS `muse_entities` (
   `location` smallint(5) unsigned DEFAULT NULL
 ) ENGINE=MyISAM AUTO_INCREMENT=176 DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `muse_entities`
+--
+
+INSERT INTO `muse_entities` (`id`, `owner`, `type`, `name`, `description`, `location`) VALUES
+(0, 2, 'room', 'Limbo', 'You are in a dense mist that seems to go on forever.', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -60,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `muse_logs` (
   `user_id` mediumint(8) unsigned NOT NULL,
   `location` mediumint(8) unsigned NOT NULL,
   `message` text CHARACTER SET utf8 NOT NULL
-) ENGINE=MyISAM AUTO_INCREMENT=616 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -114,12 +121,7 @@ ALTER TABLE `muse_entities`
 -- AUTO_INCREMENT for table `muse_logs`
 --
 ALTER TABLE `muse_logs`
-  MODIFY `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=616;
---
--- AUTO_INCREMENT for table `muse_users`
---
-ALTER TABLE `muse_users`
-AUTO_INCREMENT=2;
+  MODIFY `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

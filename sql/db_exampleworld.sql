@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 11, 2017 at 01:09 PM
+-- Generation Time: Aug 29, 2017 at 12:33 PM
 -- Server version: 5.5.51-38.2
 -- PHP Version: 5.6.20
 
@@ -17,16 +17,16 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `jsnowban_shawnsw`
+-- Database: `jsnowban_dev`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `worldbuilder_entities`
+-- Table structure for table `muse_entities`
 --
 
-CREATE TABLE IF NOT EXISTS `worldbuilder_entities` (
+CREATE TABLE IF NOT EXISTS `muse_entities` (
   `id` smallint(5) unsigned NOT NULL,
   `owner` mediumint(8) unsigned NOT NULL,
   `type` enum('room','object','exit','user') NOT NULL DEFAULT 'object',
@@ -36,10 +36,10 @@ CREATE TABLE IF NOT EXISTS `worldbuilder_entities` (
 ) ENGINE=MyISAM AUTO_INCREMENT=176 DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `worldbuilder_entities`
+-- Dumping data for table `muse_entities`
 --
 
-INSERT INTO `worldbuilder_entities` (`id`, `owner`, `type`, `name`, `description`, `location`) VALUES
+INSERT INTO `muse_entities` (`id`, `owner`, `type`, `name`, `description`, `location`) VALUES
 (1, 2, 'room', 'Bridge', 'All shiny and new, with lots of LCARS panels to interface with.', NULL),
 (3, 2, 'object', 'Captain''s Chair', 'Looks comfy. You really want to touch one of the blinking buttons.', 1),
 (4, 2, 'room', 'Turbo Lift', 'It''s like an elevator, but it can go sideways. It''s fun to watch the slights zoom by the window.', NULL),
@@ -105,7 +105,7 @@ INSERT INTO `worldbuilder_entities` (`id`, `owner`, `type`, `name`, `description
 (112, 2, 'room', 'Town Square', 'You are in the town square. All around you, peasants haggle  over their wares as unwashed urchins scramble through the legs of tables  topped with smelly produce.', NULL),
 (113, 2, 'exit', 'Town Square', '', 38),
 (114, 2, 'exit', 'Arch', '', 112),
-(0, 2, 'room', 'Limbo', 'You are in a dense mist that seems to go on forever. If you  drop an object here, or set its home to be here, you probably won''t be  able to find it again.', NULL),
+(0, 2, 'room', 'Limbo', 'You are in a dense mist that seems to go on forever.', NULL),
 (116, 2, 'exit', 'Limbo', '', 112),
 (117, 2, 'exit', 'Out;Leave', 'You catch a faint glimpse of light through the mist.', 0),
 (118, 2, 'room', 'Wizard''s Castle', 'A grand entrance hall made of stone, filled with wizards and common folk going about their business. It''s quite crowded with lots of people jostling eachother as they go to and fro.', NULL),
@@ -168,20 +168,20 @@ INSERT INTO `worldbuilder_entities` (`id`, `owner`, `type`, `name`, `description
 -- --------------------------------------------------------
 
 --
--- Table structure for table `worldbuilder_extended`
+-- Table structure for table `muse_extended`
 --
 
-CREATE TABLE IF NOT EXISTS `worldbuilder_extended` (
+CREATE TABLE IF NOT EXISTS `muse_extended` (
   `entity_id` mediumint(8) unsigned NOT NULL,
   `name` varchar(15) NOT NULL,
   `value` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `worldbuilder_extended`
+-- Dumping data for table `muse_extended`
 --
 
-INSERT INTO `worldbuilder_extended` (`entity_id`, `name`, `value`) VALUES
+INSERT INTO `muse_extended` (`entity_id`, `name`, `value`) VALUES
 (6, 'link', '4'),
 (7, 'link', '1'),
 (27, 'link', '1'),
@@ -292,10 +292,10 @@ INSERT INTO `worldbuilder_extended` (`entity_id`, `name`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `worldbuilder_logs`
+-- Table structure for table `muse_logs`
 --
 
-CREATE TABLE IF NOT EXISTS `worldbuilder_logs` (
+CREATE TABLE IF NOT EXISTS `muse_logs` (
   `id` smallint(5) unsigned NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` enum('system','user') CHARACTER SET utf8 NOT NULL DEFAULT 'user',
@@ -307,19 +307,19 @@ CREATE TABLE IF NOT EXISTS `worldbuilder_logs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `worldbuilder_users`
+-- Table structure for table `muse_users`
 --
 
-CREATE TABLE IF NOT EXISTS `worldbuilder_users` (
+CREATE TABLE IF NOT EXISTS `muse_users` (
   `entity_id` smallint(4) unsigned NOT NULL,
   `password` varchar(50) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `worldbuilder_users`
+-- Dumping data for table `muse_users`
 --
 
-INSERT INTO `worldbuilder_users` (`entity_id`, `password`) VALUES
+INSERT INTO `muse_users` (`entity_id`, `password`) VALUES
 (2, '098f6bcd4621d373cade4e832627b4f6'),
 (141, '912ec803b2ce49e4a541068d495ab570'),
 (74, '61e1f08a425cb79a18c3f6224011ab74'),
@@ -331,27 +331,27 @@ INSERT INTO `worldbuilder_users` (`entity_id`, `password`) VALUES
 --
 
 --
--- Indexes for table `worldbuilder_entities`
+-- Indexes for table `muse_entities`
 --
-ALTER TABLE `worldbuilder_entities`
+ALTER TABLE `muse_entities`
   ADD PRIMARY KEY (`id`), ADD KEY `location` (`location`);
 
 --
--- Indexes for table `worldbuilder_extended`
+-- Indexes for table `muse_extended`
 --
-ALTER TABLE `worldbuilder_extended`
+ALTER TABLE `muse_extended`
   ADD KEY `entity_id` (`entity_id`);
 
 --
--- Indexes for table `worldbuilder_logs`
+-- Indexes for table `muse_logs`
 --
-ALTER TABLE `worldbuilder_logs`
+ALTER TABLE `muse_logs`
   ADD PRIMARY KEY (`id`), ADD KEY `timestamp` (`timestamp`,`type`);
 
 --
--- Indexes for table `worldbuilder_users`
+-- Indexes for table `muse_users`
 --
-ALTER TABLE `worldbuilder_users`
+ALTER TABLE `muse_users`
   ADD PRIMARY KEY (`entity_id`);
 
 --
@@ -359,19 +359,19 @@ ALTER TABLE `worldbuilder_users`
 --
 
 --
--- AUTO_INCREMENT for table `worldbuilder_entities`
+-- AUTO_INCREMENT for table `muse_entities`
 --
-ALTER TABLE `worldbuilder_entities`
+ALTER TABLE `muse_entities`
   MODIFY `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=176;
 --
--- AUTO_INCREMENT for table `worldbuilder_logs`
+-- AUTO_INCREMENT for table `muse_logs`
 --
-ALTER TABLE `worldbuilder_logs`
+ALTER TABLE `muse_logs`
   MODIFY `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=616;
 --
--- AUTO_INCREMENT for table `worldbuilder_users`
+-- AUTO_INCREMENT for table `muse_users`
 --
-ALTER TABLE `worldbuilder_users`
+ALTER TABLE `muse_users`
 AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

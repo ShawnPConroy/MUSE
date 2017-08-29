@@ -17,7 +17,7 @@ You must have PHP and MySQL on your server. Users must have a web browser with H
 
 ## Installation
 
-1. Create a MySQL user and database, connecting with basic insert and udpate rights.
+1. Create a MySQL user and database, and give the user access to the database with basic insert, update and delete rights.
 2. From the `sql/` folder, add either the empty or default world. (Empty world hasn't been tested, and possibly won't work. It needs at least some main room to drop you in to, doesn't it?)
 3. Upload the `app/` files to your webserver in some folder, or the root.
 4. Copy the `config.php.default' to `config.php`.
