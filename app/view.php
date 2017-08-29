@@ -7,7 +7,10 @@ if( $_REQUEST['login'] ) {
 } else if( !$_SESSION['loggedIn'] ) {
 	// User is not logged in. Direct them to the login page.
 	header("Location: " . $worldbuilder['APP_URI'] . "index.php");
-} ?>
+} 
+
+$skin = $_REQUEST['skin'] ? $_REQUEST['skin'] : "ModernWhite";
+?>
 
 <html>
 
@@ -16,6 +19,7 @@ if( $_REQUEST['login'] ) {
 	<script type="text/javascript" src="javascript/userInterface.js"></script>
 	<script type="text/javascript" src="javascript/ajax.js"></script>
 	<link type="text/css" rel="stylesheet" href="css/style.css" />
+	<link type="text/css" rel="stylesheet" href="css/<?php echo $skin; ?>.css" />
 	<link href='http://fonts.googleapis.com/css?family=Patrick+Hand|Alike|Cinzel:700' rel='stylesheet' type='text/css'>
 </head>
 
@@ -57,7 +61,7 @@ if( $_REQUEST['login'] ) {
 	</div>
 	
 	<div id="actionBar">
-		<button type="button" onclick="action('full-update')">Full-update</button>
+		<!-- <button type="button" onclick="action('full-update')">Full-update</button>
 		<button type="button" onclick="action('look')">look</button>
 		<button type="button" onclick="action('take')">take</button>
 		<button type="button" onclick="action('ping')">Ping</button>
@@ -67,11 +71,11 @@ if( $_REQUEST['login'] ) {
 		<button type="button" onclick="action('bridge')">Bridge</button>
 		---
 		<button type="button" onclick="action('QUIT')">QUIT</button>
-		<br/>
+		<br/> -->
 		<input id="actionInput" type="text" onkeypress="actionInput(event)"/>
 	</div>
 
 	<div id="appHeader">MUSE PHP v pre-alpha</div>
-	<div id="appMenu">About - Help</div>
+	<div id="appMenu">Skins (<a href="?skin=ModernWhite">Modern White<a/> - <a href="?skin=ClassicBlack">Classic Black</a> - <a href="?skin=UglyAdventure">Ugly Adventure</a>) - About - Help</div>
 	
 </body>

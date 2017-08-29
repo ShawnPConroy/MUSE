@@ -1,7 +1,8 @@
 body {
 	margin: 0px;
 	padding: 0px;
-	background-color: #335749; /* #eaeaea */;
+	background-color: black;
+	color: white;
 	font-size: large;
 }
 
@@ -13,8 +14,8 @@ div#log {
 	width: 70%;
 	/*height: 100%;*/
 	overflow-y:scroll;
-	background-color: #F3E0AC;
-	color: #348017;
+	background-color: black;
+	color: white;
 	/*margin: 1.5em;*/
 	padding: .5em;
 	-webkit-border-radius: 20px;
@@ -34,7 +35,8 @@ div#actionBar {
 
 input#actionInput {
 	height: 2.5em;
-	background-color: #F3E0AC;
+	background-color: black;
+	color: white;
 	-webkit-border-radius: 20px;
 	border-radius: 20px; 
 	font-family: 'Alike', serif;
@@ -61,8 +63,8 @@ div#inventoryDiv {
 div.helperList {
 	margin: 0;
 	padding: 0;
-	color: #348017;
-	background-color: #2f0000;
+	color: white;
+	background-color: black;
 	-webkit-border-top-left-radius: 20px;
 	-webkit-border-top-right-radius: 20px;
 	-moz-border-radius-topleft: 20px;
@@ -79,8 +81,8 @@ div.helperList {
 
 .header {
 	text-align: center;
-	background-color: #7F462C;	
-	color: #ECD672;
+	background-color: black;	
+	color: white;
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	border-radius: 20px;
@@ -103,7 +105,8 @@ span.speech {
 
 div.location {
 	margin-top: 1em;
-	color: #024003;
+	color: white;
+	background-color: black;
 }
 
 div#appHeader {
@@ -122,10 +125,14 @@ div#appHeader, div#appMenu {
 	text-align: center;
 	padding-left: 1em;
 	padding-right: 1em;
-	background-color: #2F0000;	
-	color: #ECD672;
+	background-color: black;	
+	color: white;
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	border-radius: 20px;
 
+}
+
+a:link, a:visited {
+	color: #ccc;
 }

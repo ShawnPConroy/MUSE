@@ -82,7 +82,7 @@ div.helperList {
 
 .header {
 	text-align: center;
-	background-color: e6e6fa;	
+	background-color: #e6e6fa;	
 	color: black;
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
@@ -123,7 +123,7 @@ div#appHeader {
 div#appMenu {
 	position: absolute;
 	top: 0;
-	right: 0;	
+	right: 0;
 }
 
 div#appHeader, div#appMenu {
@@ -135,5 +135,6 @@ div#appHeader, div#appMenu {
 	-webkit-border-radius: 20px;
 	-moz-border-radius: 20px;
 	border-radius: 20px;
+	background-color: #e6e6fa;	
 
 }
