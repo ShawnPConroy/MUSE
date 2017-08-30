@@ -18,10 +18,10 @@
  */
 
 function getEntitiesByLocation( $location, $type = null ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	
-	$sql = "SELECT * FROM {$wb['DB_PREFIX']}_entities WHERE location = {$location};";
-	$entities = $wb['db']->query($sql);
+	$sql = "SELECT * FROM {$muse['DB_PREFIX']}_entities WHERE location = {$location};";
+	$entities = $muse['db']->query($sql);
 	addServerMessageToXML($sql." Number of rows:". $entities->num_rows);
 	
 	return $entities;
@@ -36,9 +36,9 @@ function getEntitiesByLocation( $location, $type = null ) {
  */
 
 function getLocation( $locationId ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	
-	$location = $wb['db']->query("SELECT * FROM {$wb['DB_PREFIX']}_entities WHERE id = '$locationId';");
+	$location = $muse['db']->query("SELECT * FROM {$muse['DB_PREFIX']}_entities WHERE id = '$locationId';");
 	$location = $location->fetch_assoc();
 	return $location;
 }
@@ -53,12 +53,12 @@ function getLocation( $locationId ) {
  */
  
 function getLocationEntityByName( $name, $location ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	
 	addServerMessageToXML("--Searching all objects named $name!".
-	"SELECT * FROM {$wb['DB_PREFIX']}_entities
+	"SELECT * FROM {$muse['DB_PREFIX']}_entities
 		WHERE name = '{$name}' AND location = '{$location}';");
-	$object = $wb['db']->query("SELECT * FROM {$wb['DB_PREFIX']}_entities
+	$object = $muse['db']->query("SELECT * FROM {$muse['DB_PREFIX']}_entities
 		WHERE name = '{$name}' AND location = '{$location}';");
 	if( $object->num_rows ) {
 		addServerMessageToXML("----Found something!");
@@ -80,14 +80,14 @@ function getLocationEntityByName( $name, $location ) {
  * @return void
  */
 function getLogUpdates() {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 
-	$sql = "SELECT  *  FROM {$wb['DB_PREFIX']}_logs
+	$sql = "SELECT  *  FROM {$muse['DB_PREFIX']}_logs
 	WHERE type='user'
 	AND user_id != '{$_SESSION['userID']}' AND location = {$_SESSION['location']}
 	AND timestamp > '{$_SESSION['lastUpdate']}'";
 	addServerMessageToXML( $sql );
-	$result = $wb['db']->query( $sql );
+	$result = $muse['db']->query( $sql );
 	while( $result && $log = $result->fetch_assoc() ) {
 		addLogToXML( $log['message'] );
 		$_SESSION['lastUpdate'] = $log['timestamp'];

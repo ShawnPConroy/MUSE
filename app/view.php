@@ -6,7 +6,7 @@ if( $_REQUEST['login'] ) {
 	userAccountCreate();
 } else if( !$_SESSION['loggedIn'] ) {
 	// User is not logged in. Direct them to the login page.
-	header("Location: " . $worldbuilder['APP_URI'] . "index.php");
+	header("Location: " . $muse['APP_URI'] . "index.php");
 } 
 
 $skin = $_REQUEST['skin'] ? $_REQUEST['skin'] : "ModernWhite";
@@ -75,7 +75,7 @@ $skin = $_REQUEST['skin'] ? $_REQUEST['skin'] : "ModernWhite";
 		<input id="actionInput" type="text" onkeypress="actionInput(event)"/>
 	</div>
 
-	<div id="appHeader">MUSE PHP v pre-alpha</div>
+	<div id="appHeader">MUSE v0.1.0 (Alpha 1)</div>
 	<div id="appMenu">Skins (<a href="?skin=ModernWhite">Modern White<a/> - <a href="?skin=ClassicBlack">Classic Black</a> - <a href="?skin=UglyAdventure">Ugly Adventure</a>) - About - Help</div>
 	
 </body>

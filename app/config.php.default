@@ -2,16 +2,16 @@
 /**
  * Configurations, includes and system variables.
  */
-$wb['DB_HOST'] = "localhost";
-$wb['DB_USER'] = "muse_user";
-$wb['DB_PASSWORD'] = "password";
-$wb['DB_DATABSE'] = "muse_db";
-$wb['DB_PREFIX'] = "muse";
+$muse['DB_HOST'] = "localhost";
+$muse['DB_USER'] = "muse_user";
+$muse['DB_PASSWORD'] = "password";
+$muse['DB_DATABSE'] = "muse_db";
+$muse['DB_PREFIX'] = "muse";
 
-$wb['APP_URL'] = "http://myserver.com/muse/";
+$muse['APP_URL'] = "http://myserver.com/muse/";
 
 // Connect to database
-$wb["db"] = new mysqli($wb['DB_HOST'], $wb['DB_USER'], $wb['DB_PASSWORD'], $wb['DB_DATABSE']);
+$muse["db"] = new mysqli($muse['DB_HOST'], $muse['DB_USER'], $muse['DB_PASSWORD'], $muse['DB_DATABSE']);
 
 include "./functions/clientResponse.php";	// Functions to build XML response to client request
 include "./functions/buildActions.php";		// Functions to create/destroy/etc in world objects

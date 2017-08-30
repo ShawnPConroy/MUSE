@@ -17,20 +17,20 @@
  * @return boolean false if creation failed
  */
 function createEntity( $name, $location, $type ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 
 	/* Make null SQL friendly, used for rooms */
 	if( is_null( $location ) ) {
 		$location ='null';
 	}
 
-	$sql = "INSERT INTO {$wb['DB_PREFIX']}_entities
+	$sql = "INSERT INTO {$muse['DB_PREFIX']}_entities
 	(name, owner, location, type) values ( '$name', {$_SESSION['userID']}, $location, '$type' );";
 	addServerMessageToXML( $sql );
-	$result = $wb['db']->query($sql);
+	$result = $muse['db']->query($sql);
 
 	if( $result ) {
-		$result = $wb['db']->insert_id;
+		$result = $muse['db']->insert_id;
 	} else {
 		$result = false;
 	}
@@ -48,7 +48,7 @@ function createEntity( $name, $location, $type ) {
  * @return boolean Creation success
  */
 function createExit( $locationId, $exitName, $toId = null, $entranceName = null ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 
 	/* Create exit. If successful, link to $toId. If a return $entranceName, create exit back. */
 	addServerMessageToXML("Started CreateExit with '$locationId', '$exitName', '$toId', '$entranceName'.");
@@ -57,7 +57,7 @@ function createExit( $locationId, $exitName, $toId = null, $entranceName = null 
 	if( $result ) {
 		addLogToXML("Created exit $exitName.");
 		if( !is_null($toId) ) {
-			$result = linkExit( $wb['db']->insert_id, $toId );
+			$result = linkExit( $muse['db']->insert_id, $toId );
 				
 			if( $result && !is_null( $entranceName ) ) {
 				// Create an exit and link back
@@ -78,13 +78,13 @@ function createExit( $locationId, $exitName, $toId = null, $entranceName = null 
  * @return mixed Query result
  */
 function changeOwner( $entityId, $newOwnerId ) {
-	global $wb; // App settings & databae
+	global $muse; // App settings & databae
 	
-	$sql = "UPDATE {$wb['DB_PREFIX']}_entities
+	$sql = "UPDATE {$muse['DB_PREFIX']}_entities
 			SET owner = '{$newOwnerId}'
 			WHERE id = '$entityId';";
 	
-	$result = $wb['db']->query( $sql );
+	$result = $muse['db']->query( $sql );
 	
 	return $result;
 }
@@ -98,17 +98,17 @@ function changeOwner( $entityId, $newOwnerId ) {
  * @return mixed result of query
  */
 function destroyEntity( $entity ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 
-	$result = $wb['db']->query("DELETE FROM {$wb['DB_PREFIX']}_entities
+	$result = $muse['db']->query("DELETE FROM {$muse['DB_PREFIX']}_entities
 	WHERE id='{$entity['id']}';");
 		
 	// Delete on the extended information table
 	if( $result ) {
-		$sql = "DELETE FROM {$wb['DB_PREFIX']}_extended
+		$sql = "DELETE FROM {$muse['DB_PREFIX']}_extended
 		WHERE entity_id='{$entity['id']}';";
 		addServerMessageToXML( $sql);
-		$result = $wb['db']->query($sql);
+		$result = $muse['db']->query($sql);
 	}
 
 	return $result;
@@ -123,7 +123,7 @@ function destroyEntity( $entity ) {
 * @return mixed Result of query.
 */
 function dropEntity( $entity ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	
 	if( $result = moveEntity( $entity, $_SESSION['location'] ) ) {
 		if( isset( $entity['drop'] ) ) {
@@ -159,12 +159,12 @@ function dropEntity( $entity ) {
  * @return mixed Query result.
  */
 function insertLog( $type, $userID, $location, $message ) {
-	global $wb; // App settings & database
-	$message = $wb['db']->real_escape_string($message);
-	$sql = "INSERT INTO {$wb['DB_PREFIX']}_logs
+	global $muse; // App settings & database
+	$message = $muse['db']->real_escape_string($message);
+	$sql = "INSERT INTO {$muse['DB_PREFIX']}_logs
 	(type, user_id, location, message) values ( '$type', '$userID', '$location', '$message' );";
 	addServerMessageToXML($sql);
-	return $wb['db']->query( $sql );
+	return $muse['db']->query( $sql );
 }
 
 /**
@@ -176,7 +176,7 @@ function insertLog( $type, $userID, $location, $message ) {
  */
 
 function linkExit(  $exitId, $toID ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 
 	$exit = getEntity( "#".$exitId, null, "exit" );
 	$result = setExtendedData( $exit, "link", $toID );
@@ -191,13 +191,13 @@ function linkExit(  $exitId, $toID ) {
  * @return Query result.
  */
 function moveEntity( $entity, $locationId ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 
-	$sql = "UPDATE {$wb['DB_PREFIX']}_entities
+	$sql = "UPDATE {$muse['DB_PREFIX']}_entities
 	SET location = $locationId
 	WHERE id = {$entity['id']};";
 	addServerMessageToXML($sql);
-	$result = $wb['db']->query($sql);
+	$result = $muse['db']->query($sql);
 
 	return $result;
 }
@@ -212,10 +212,10 @@ function moveEntity( $entity, $locationId ) {
  * @return mixed mysqli::query result
  */
 function setEntityField( $field, $entityID, $value) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 
-	$result = $wb['db']->query(
-		"UPDATE {$wb['DB_PREFIX']}_entities
+	$result = $muse['db']->query(
+		"UPDATE {$muse['DB_PREFIX']}_entities
 		SET $field = '$value'
 		WHERE id = $entityID;");
 	return $result;
@@ -230,17 +230,17 @@ function setEntityField( $field, $entityID, $value) {
  * @return mixed Query result.
  */
 function setExtendedData( $entity, $name, $value ) {
-	global $wb;
+	global $muse;
 
 	/* Update existing attribute, or create new attribute */
 	if( isset( $entity[ $name ] ) ) {
 		// Update existing data
-		$sql = "UPDATE {$wb['DB_PREFIX']}_extended
+		$sql = "UPDATE {$muse['DB_PREFIX']}_extended
 			SET `value` = '$value'
 			WHERE entity_id = '{$entity['id']}'
 			AND `name` = '$name';";
 		addServerMessageToXML( $sql );
-		$result = $wb['db']->query($sql);
+		$result = $muse['db']->query($sql);
 		
 		if( $result ) {
 			addLogToXML("Updated $name on {$entity['name']}.");
@@ -249,11 +249,11 @@ function setExtendedData( $entity, $name, $value ) {
 		}
 	} else {
 		// Insert new data
-		$sql = "INSERT INTO {$wb['DB_PREFIX']}_extended
+		$sql = "INSERT INTO {$muse['DB_PREFIX']}_extended
 			(entity_id, name, value) VALUES
 			('{$entity['id']}', '$name', '$value');";
 		addServerMessageToXML( $sql );
-		$result = $wb['db']->query($sql);
+		$result = $muse['db']->query($sql);
 		if( $result ) {
 			addLogToXML("Set $name on {$entity['name']}.");
 		} else {
@@ -273,7 +273,7 @@ function setExtendedData( $entity, $name, $value ) {
 * @return mixed Query result.
 */
 function takeEntity( $entity ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 
 	if( $result = moveEntity( $entity, $_SESSION['userID'] ) ) {
 		if( isset( $entity['success'] ) ) {

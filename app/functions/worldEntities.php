@@ -21,7 +21,7 @@
  * @return array Single entity or false.
  */
 function getEntity( $id, $location = null, $type = null, $silent = false ) {
-	global $wb;
+	global $muse;
 	
 	
 	/* If location is 'here' or 'me' get the ID number */
@@ -61,20 +61,20 @@ function getEntity( $id, $location = null, $type = null, $silent = false ) {
 		$typeSQL = "AND type = '$type'";
 	}
 	
-	$sql = "SELECT * FROM {$wb['DB_PREFIX']}_entities
+	$sql = "SELECT * FROM {$muse['DB_PREFIX']}_entities
 			WHERE ($idType = '{$id}' OR $idType LIKE '{$id};%' OR $idType LIKE '%;{$id};%') $typeSQL $locationSQL;";
 			
 	addServerMessageToXML( $sql );
 	
-	$result = $wb['db']->query($sql);
+	$result = $muse['db']->query($sql);
 	
 	/* If no matches, do a wider search */
 	if( $result && $result->num_rows == 0 ) {
-		$sql = "SELECT * FROM {$wb['DB_PREFIX']}_entities
+		$sql = "SELECT * FROM {$muse['DB_PREFIX']}_entities
 				WHERE $idType LIKE '%{$id}%' $typeSQL $locationSQL;";
 		addServerMessageToXML( $sql );
 	
-		$result = $wb['db']->query($sql);
+		$result = $muse['db']->query($sql);
 	}
 
 	/* Get all data for this object and return it, or return a list of
@@ -106,9 +106,9 @@ function getEntity( $id, $location = null, $type = null, $silent = false ) {
  * @return array An array representing an in-world object with all fields
  */
 function getExtendedData( &$entity ) {
-	global $wb;
+	global $muse;
 	
-	$result = $wb['db']->query("SELECT * FROM {$wb['DB_PREFIX']}_extended
+	$result = $muse['db']->query("SELECT * FROM {$muse['DB_PREFIX']}_extended
 				WHERE entity_id = '{$entity['id']}';");
 	
 	while( $result && $parameter = $result->fetch_assoc() ) {
@@ -184,7 +184,7 @@ function passesLock( $entity ) {
  * @return Ambigous <boolean, unknown>
  */
 function moveUser($exit) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	
 	$user['id'] = $_SESSION['userID'];
 	

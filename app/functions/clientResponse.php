@@ -12,22 +12,22 @@
  * Start the XML response object.
  */
 function responseStart() {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	// Prepare AJAX XML response, with root node
 	header("Content-Type: text/xml");
 
-	$wb['xml'] = new DOMDocument();
-	$wb['xml']->formatOutput = true;
-	$wb['response'] = $wb['xml']->createElement( "response" );
-	$wb['xml']->appendChild( $wb['response'] );
+	$muse['xml'] = new DOMDocument();
+	$muse['xml']->formatOutput = true;
+	$muse['response'] = $muse['xml']->createElement( "response" );
+	$muse['xml']->appendChild( $muse['response'] );
 }
 
 /**
  * Display the XML response object to client.
  */
 function responseFinish() {
-	global $wb; // App settings & database
-	echo $wb['xml']->saveXML(); // Sends response
+	global $muse; // App settings & database
+	echo $muse['xml']->saveXML(); // Sends response
 }
 
 /**
@@ -37,9 +37,9 @@ function responseFinish() {
  * @return void
  */
 function addLocationEntitiesToResponse( $location, $tag = null ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	
-	$entities = $wb['db']->query("SELECT * FROM {$wb['DB_PREFIX']}_entities WHERE location = {$location};");
+	$entities = $muse['db']->query("SELECT * FROM {$muse['DB_PREFIX']}_entities WHERE location = {$location};");
 	while ( $entities && $entity = $entities->fetch_assoc() ) {
 		$entity['name'] = strtok($entity['name'], ';');
 		if( $tag != null ) {
@@ -71,11 +71,11 @@ function addLocationToResponse( $location ) {
  * @param String $text data in node
  */
 function addTextElement( $object, $text ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	
-	$element = $wb['xml']->createElement( $object );
-	$element->appendChild( $wb['xml']->createTextNode( $text ) );
-	$wb['response']->appendChild( $element );
+	$element = $muse['xml']->createElement( $object );
+	$element->appendChild( $muse['xml']->createTextNode( $text ) );
+	$muse['response']->appendChild( $element );
 }
 
 

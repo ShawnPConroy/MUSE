@@ -11,11 +11,11 @@ include "./config.php";
  * Gatekeeper function.
  */
 function checkLogin() {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	// Only let logged in people come through
 	if( !$_SESSION['loggedIn'] ) {
 		addLogToXML("You have been logged out. Please reload the page");
-		echo $wb['xml']->saveXML();
+		echo $muse['xml']->saveXML();
 		exit();
 	}
 }
@@ -24,18 +24,18 @@ function checkLogin() {
  * Breaks apart the client request to system variables.
  */
 function processRequest(){
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	global $HTTP_RAW_POST_DATA;
 	
 	// Get the user's posted action
-	$wb['actionRequestRaw'] = $HTTP_RAW_POST_DATA;
-	$wb['actionRequest'] = $wb['db']->real_escape_string(trim($HTTP_RAW_POST_DATA));
+	$muse['actionRequestRaw'] = $HTTP_RAW_POST_DATA;
+	$muse['actionRequest'] = $muse['db']->real_escape_string(trim($HTTP_RAW_POST_DATA));
 	// First word of action request will be the action keyword.
-	$wb['actionKeyword'] = strtolower(substr( $wb['actionRequest'], 0, strpos( $wb['actionRequest'], " " ) ) );
+	$muse['actionKeyword'] = strtolower(substr( $muse['actionRequest'], 0, strpos( $muse['actionRequest'], " " ) ) );
 	
 	// If it's only one word, through it back in. Capatlization issues?
-	if ($wb['actionKeyword']==false) {
-		$wb['actionKeyword'] = $wb['actionRequest'];
+	if ($muse['actionKeyword']==false) {
+		$muse['actionKeyword'] = $muse['actionRequest'];
 	}
 }
 
@@ -51,10 +51,10 @@ processRequest();	// Process client request and store in system variables
 getLogUpdates();	// Always show log updates
 
 // Attempt to match to request type
-if ( userAction( $wb['actionKeyword'], $wb['actionRequest'] ) ) {
+if ( userAction( $muse['actionKeyword'], $muse['actionRequest'] ) ) {
 } else if ( serverAction() ) {
-} else if ( userActionMove( $wb['actionRequest'] ) ) {
-} else if ( $wb['actionRequest'] != "update" ) {
+} else if ( userActionMove( $muse['actionRequest'] ) ) {
+} else if ( $muse['actionRequest'] != "update" ) {
 	// Give an error message only if user entered an action
 	addLogToXML("I'm not sure what you meant.");
 }

@@ -15,10 +15,10 @@
  * @param $tag Optional. Changes tag (element) of XML node output.
  */
 function addLocationEntitiesToXML( $location, $tag = null ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	
 	
-	$entities = $wb['db']->query("SELECT * FROM {$wb['DB_PREFIX']}_entities WHERE location = {$location};");
+	$entities = $muse['db']->query("SELECT * FROM {$muse['DB_PREFIX']}_entities WHERE location = {$location};");
 	while ( $entities && $entity = $entities->fetch_assoc() ) {
 		$entity['name'] = strtok($entity['name'], ';');
 		if( $tag != null ) {
@@ -42,11 +42,11 @@ function addLocationEntitiesToXML( $location, $tag = null ) {
  * @param string $text Text message.
  */
 function addTextElement( $object, $text ) {
-	global $wb; // App settings & database
+	global $muse; // App settings & database
 	
-	$element = $wb['xml']->createElement( $object );
-	$element->appendChild( $wb['xml']->createTextNode( $text ) );
-	$wb['response']->appendChild( $element );
+	$element = $muse['xml']->createElement( $object );
+	$element->appendChild( $muse['xml']->createTextNode( $text ) );
+	$muse['response']->appendChild( $element );
 }
 
 /**
