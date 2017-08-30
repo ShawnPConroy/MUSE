@@ -10,11 +10,11 @@ include "./config.php";
 /**
  * Gatekeeper function.
  */
-function checkLogin() {
+function checkSignedIn() {
 	global $muse; // App settings & database
 	// Only let logged in people come through
-	if( !$_SESSION['loggedIn'] ) {
-		addLogToXML("You have been logged out. Please reload the page");
+	if( !$_SESSION['signedIn'] ) {
+		addLogToXML("You have been signed out. Please reload the page");
 		echo $muse['xml']->saveXML();
 		exit();
 	}
@@ -46,7 +46,7 @@ function processRequest(){
 
 
 responseStart();	// Start client response
-checkLogin();		// Gatekeeper
+checkSignedIn();	// Gatekeeper
 processRequest();	// Process client request and store in system variables
 getLogUpdates();	// Always show log updates
 

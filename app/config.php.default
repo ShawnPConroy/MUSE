@@ -9,7 +9,7 @@ $muse['DB_DATABSE'] = "muse_db";
 $muse['DB_PREFIX'] = "muse";
 
 $muse['APP_URL'] = "http://myserver.com/muse/";
-
+$muse['APP_TITLE'] = "MUSE Demo Test World";
 // Connect to database
 $muse["db"] = new mysqli($muse['DB_HOST'], $muse['DB_USER'], $muse['DB_PASSWORD'], $muse['DB_DATABSE']);
 

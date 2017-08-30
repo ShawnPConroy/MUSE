@@ -1,10 +1,10 @@
 <?php include "./config.php";
 
-if( $_REQUEST['login'] ) {
-	userAccountLogin();	
+if( $_REQUEST['signIn'] ) {
+	userAccountSignIn();	
 } else if( $_REQUEST['create'] ) {
-	userAccountCreate();
-} else if( !$_SESSION['loggedIn'] ) {
+	userAccountSignUp();
+} else if( !$_SESSION['signedIn'] ) {
 	// User is not logged in. Direct them to the login page.
 	header("Location: " . $muse['APP_URI'] . "index.php");
 } 
@@ -75,7 +75,7 @@ $skin = $_REQUEST['skin'] ? $_REQUEST['skin'] : "ModernWhite";
 		<input id="actionInput" type="text" onkeypress="actionInput(event)"/>
 	</div>
 
-	<div id="appHeader">MUSE v0.1.0 (Alpha 1)</div>
+	<div id="appHeader"><?php echo $muse['APP_TITLE']; ?></div>
 	<div id="appMenu">Skins (<a href="?skin=ModernWhite">Modern White<a/> - <a href="?skin=ClassicBlack">Classic Black</a> - <a href="?skin=UglyAdventure">Ugly Adventure</a>) - About - Help</div>
 	
 </body>

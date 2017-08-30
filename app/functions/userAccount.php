@@ -14,7 +14,7 @@
  * @return boolean True if successful.
  * @return boolean False if unsuccessful.
  */
-function userAccountCreate( $username, $password ) {
+function userAccountSignUp( $username, $password ) {
 	global $muse; // App settings & database
 	
 	// Create exit
@@ -29,7 +29,7 @@ function userAccountCreate( $username, $password ) {
 /**
  * Authenticate user. Set's system variables if successful.
  */
-function userAccountLogin() {
+function userAccountSignIn() {
 	global $muse; // App settings & database
 	
 	$username = $muse['db']->real_escape_string( $_REQUEST['username'] );
@@ -48,21 +48,13 @@ function userAccountLogin() {
 	if( $result && $result->num_rows ) {
 		$user = $result->fetch_assoc();
 		
-		$_SESSION['loggedIn'] = true;
+		$_SESSION['signedIn'] = true;
 		$_SESSION['username'] = $user['name'];
 		$_SESSION['userID'] = $user['id'];
 		$_SESSION['location'] = $user['location'];
 		$_SESSION['lastUpdate'] = date( 'Y-m-d H:i:s' );
 	} else {
-		$_SESSION['errorMessage'] = $_REQUEST['username'].$username.$_REQUEST['password'].$password.isset($muse).isset($muse['db']). "SELECT o.name, o.id, u.password, o.location
-		FROM `{$muse['DB_PREFIX']}_entities` AS o
-		LEFT JOIN `{$muse['DB_PREFIX']}_users` AS u ON o.id = u.entity_id
-		WHERE o.type = 'user'
-			AND o.name = '$username'
-			AND u.password = MD5( '$password' ) 
-		LIMIT 1"
-		.
-		"Your username and password combination did not match any user we have. Please try again.";
+		$_SESSION['errorMessage'] = "Your username and password combination did not match any user we have. Please try again.";
 		header("Location: " . $muse['APP_URI'] . "index.php");
 	}
 	return;
