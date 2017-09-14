@@ -27,10 +27,9 @@ div#log {
 div#actionBar {
 	position: absolute;
 	bottom: 0;
-	left: 3em;
-	width: 70%;
+	left: 0;
+	width: 72%;
 	margin: none; 
-	
 }
 
 input#actionInput {

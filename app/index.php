@@ -1,35 +1,81 @@
-<?php include "config.php"; ?>
+<?php include "./config.php";
+
+if( $_REQUEST['signIn'] ) {
+	userAccountSignIn();	
+} else if( $_REQUEST['create'] ) {
+	userAccountSignUp();
+} else if( !$_SESSION['signedIn'] ) {
+	// User is not signed in. Direct them to the sign in page.
+	header("Location: " . $muse['APP_URI'] . "signin.php");
+} 
+
+$skin = $_REQUEST['skin'] ? $_REQUEST['skin'] : "ModernWhite";
+?>
 
 <html>
+
 <head>
-	<link type="text/css" rel="stylesheet" href="css/login.css" />
-<body>
+	<title>MUSE</title>
+	<script type="text/javascript" src="javascript/userInterface.js"></script>
+	<script type="text/javascript" src="javascript/ajax.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/style.css" />
+	<link type="text/css" rel="stylesheet" href="css/<?php echo $skin; ?>.css" />
+	<link href='http://fonts.googleapis.com/css?family=Patrick+Hand|Alike|Cinzel:700' rel='stylesheet' type='text/css'>
+</head>
 
-<div class="container">
-<h1><?php echo $muse['APP_TITLE'] ?></h1>
-<?php echo $_SESSION['errorMessage']; $_SESSION['errorMessage'] = ""; ?>
+<body onLoad="initialize();">
 
-<div class="formContainer">
-	<h2>Sign in</h2>
-	<form action="view.php" method="post">
-		<span class="signInLabels">Username</span><input type="text" name="username"><br/>
-		<span class="signInLabels">Password</span><input type="password" name="password"><br/>
-		<span class="signInLabels">&nbsp;</span>
-		<input type="submit" name="signIn" value="Sign In"><br/>
-	&nbsp;
-</form>
-</div>
 
-<div class="formContainer">
-	<h2>Sign up</h2>
-	<form action="createUser.php" method="post">
-		<span class="signUpLabels">Username</span><input type="text" name="username"><br/>
-		<span class="signUpLabels">Password</span><input type="password" name="password"><br/>
-		<span class="signUpLabels">Confirm password</span><input type="password" name="passwordCheck"><br/>
-		<span class="signUpLabels">&nbsp;</span><input type="submit" name="create" value="Create account">
-	</form>
-</div>
+	<div id="contains">
+		<p id="location" class="header location">nowhere</p>
 
-</div>
+		<div class="helperList">
+			<div class="header">People</div>
+			<ul id="users" class="helperList">
+			</ul>
+		</div>
+		
+		<div class="helperList">
+			<div class="header">Objects</div>
+			<ul id="objects" class="helperList">
+			</ul>
+		</div>
+		
+		<div class="helperList">
+			<div class="header">Exits</div>
+			<ul id="exits" class="helperList">
+			</ul>
+		</div>
+		
+		
+	</div>
+	
+	<div id="inventoryDiv" class="helperList">
+		<div class="header">Invetory</div>
+		<ul id="inventory" class="helperList">
+		</ul>
+	</div>
+	
+	<div id="log">
+	You wake up suddenly and look around.<br>
+	</div>
+	
+	<div id="actionBar">
+		<!-- <button type="button" onclick="action('full-update')">Full-update</button>
+		<button type="button" onclick="action('look')">look</button>
+		<button type="button" onclick="action('take')">take</button>
+		<button type="button" onclick="action('ping')">Ping</button>
+		<button type="button" onclick="action('info')">info</button>
+		---
+		<button type="button" onclick="action('turbo lift')">Turbo Lift</button>
+		<button type="button" onclick="action('bridge')">Bridge</button>
+		---
+		<button type="button" onclick="action('QUIT')">QUIT</button>
+		<br/> -->
+		<input id="actionInput" type="text" onkeypress="actionInput(event)"/>
+	</div>
+
+	<div id="appHeader"><?php echo $muse['APP_TITLE']; ?></div>
+	<div id="appMenu">Skins (<a href="?skin=ModernWhite">Modern White<a/> - <a href="?skin=ClassicBlack">Classic Black</a> - <a href="?skin=UglyAdventure">Ugly Adventure</a>) - About - Help</div>
+	
 </body>
-</html>

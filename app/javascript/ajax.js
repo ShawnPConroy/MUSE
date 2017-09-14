@@ -89,20 +89,23 @@ function processResponseLocation( locations ) {
 function processResponseAddToList( listID, items) {
 	debug("Adding to list: "+listID);
 
+	try {
+		if( items ) {
 	
-	if( items ) {
-
-		// Get the objects list
-		var itemList = document.getElementById(listID);
+			// Get the objects list
+			var itemList = document.getElementById(listID);
 		
-		for( i=0; i<items.length; i++ ) {
-			// Add to list, first child is always name
-			var newItem = document.createElement('li');
-			newItem.innerHTML = items[i].firstChild.nodeValue;
-			itemList.insertBefore( newItem, itemList.firstChild );
+			for( i=0; i<items.length; i++ ) {
+				// Add to list, first child is always name
+				var newItem = document.createElement('li');
+				newItem.innerHTML = items[i].firstChild.nodeValue;
+				itemList.insertBefore( newItem, itemList.firstChild );
+			}
+		} else {
+			debug("--No "+listID+" to process");
 		}
-	} else {
-		debug("--No "+listID+" to process");
+	} catch (e) {
+		// This happens if there are no items, and it sent only a <br> I think.
 	}
 	
 	return;

@@ -92,7 +92,7 @@ function userActionLook( $actionRequest ) {
 		} else addServerMessageToXML("Desc empty");
 		if( !empty($objects) ) {
 			$xml .= $objects."<br>";
-		} else addServerMessageToXML("object s empty");
+		} else addServerMessageToXML("objects empty");
 		if( !empty($exits) ) {
 			$xml .= $exits."<br>";
 		} else addServerMessageToXML("exits empty");
@@ -304,7 +304,7 @@ function userAction( $actionKeyword, $actionRequest ) {
 		userActionExamine( $actionRequest );
 	} else if( substr( $actionRequest, 0, 1) == "@" ) {
 		userBuildActions( $actionRequest );
-	} else if( $actionKeyword == "QUIT" || $actionKeyword == "LOGOUT" ) {
+	} else if( $actionKeyword == "QUIT" || $actionKeyword == "SIGNOUT" || $actionKeyword == "LOGOUT" ) {
 		// Needs to be made case sensitive
 		userAccountLogout();
 	} else {
