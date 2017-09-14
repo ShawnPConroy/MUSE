@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `muse_entities` (
 --
 
 INSERT INTO `muse_entities` (`id`, `owner`, `type`, `name`, `description`, `location`) VALUES
-(0, 2, 'room', 'Limbo', 'You are in a dense mist that seems to go on forever.', NULL);
+(0, 2, 'room', 'Limbo', 'You are surrounded by a dense mist that seems to go on forever.', NULL);
 
 -- --------------------------------------------------------
 
