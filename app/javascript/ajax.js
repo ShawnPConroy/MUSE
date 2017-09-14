@@ -34,7 +34,7 @@ function sendAction(url,action,cfunc)
 /**
  * Processes server messages. Pulls server messages from the response.
  * Performs actions from the server, such as clearing the helper lists.
- * Displays any debug messages to the log / story, if debugging is on.
+ * Displays any debug messages to the narrative box, if debugging is on.
  * @param {string} response The full response from the server.
  */
 function processResponseServerMessages( response ) {
@@ -132,26 +132,26 @@ function processResponseEntities( response ) {
 }
 
 /**
- * Adds standard game responses/logs to the log box (story box).
+ * Adds standard game responses to the narrative box.
  * @param {xml} response XML response from server
  */
-function processResponseLogs( response ) {
+function processResponseNarratives( response ) {
 	
 	
-	var newLogs = response.documentElement.getElementsByTagName("log");
+	var newNarratives = response.documentElement.getElementsByTagName("narrative");
 	
-	if (newLogs) {
+	if (newNarratives) {
 			
 		// Add new objects
-		debug("Number of logs: " + newLogs.length);
+		debug("Number of narratives: " + newNarratives.length);
 		
-		for( i=0; i<newLogs.length; i++ ) {
+		for( i=0; i<newNarratives.length; i++ ) {
 			// Add to list, first child is always name
-			debug("Adding log: " + newLogs[i].firstChild.nodeValue);
-			addToLog( newLogs[i].firstChild.nodeValue );
+			debug("Adding to narrative: " + newNarratives[i].firstChild.nodeValue);
+			addToNarrative( newNarratives[i].firstChild.nodeValue );
 		}
 	} else {
-		debug("No logs to process");
+		debug("No narratives to process");
 	}
 	
 	return;
@@ -165,13 +165,13 @@ function processResponse( response ) {
 	processResponseServerMessages( response );
 	processResponseEntities( response );
 	processResponseLocation( response );
-	processResponseLogs( response);
+	processResponseNarratives( response);
 	return;
 }
 
 /**
  * Function to handle a user action request. It displays the 
- * requestion to the log / story box, sends it to the server
+ * requestion to the narratives box, sends it to the server
  * and prepares for next action.
  *
  * @param {string} actionString The user's command/request.

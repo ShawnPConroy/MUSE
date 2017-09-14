@@ -6,7 +6,7 @@ body {
 	font-size: large;
 }
 
-div#log {
+div#narrativeBox {
 	position: absolute;
 	top: 1.5em;
 	bottom: 4em;

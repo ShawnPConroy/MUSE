@@ -1,5 +1,5 @@
 <?
-/* Process user account requestion. Login and Logout and Create.
+/* Process user account requestion. Sign in and Sign out and Create.
  *
  * This file is part of MUSE.
  *
@@ -61,9 +61,9 @@ function userAccountSignIn() {
 }
 
 /**
- * Force user logout.
+ * Force user sign out.
  */
-function userAccountLogout() {
+function userAccountSignOut() {
 	session_destroy();
 	addLogToXML("You have quit. Good bye.");
 }

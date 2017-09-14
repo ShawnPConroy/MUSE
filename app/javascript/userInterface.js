@@ -40,13 +40,13 @@ function uiFocusCursor() {
 }
 
 /**
- * Adds string to log (or 'story box' as it should be called).
+ * Adds string to narrative box.
  * @param {string} logString Text to add to log / story box.
  */
-function addToLog( logString ) {
-	logDiv = document.getElementById("log");
-	logDiv.innerHTML += logString+"<br>";
-	logDiv.scrollTop = logDiv.scrollHeight;
+function addToNarrative( narrativeString ) {
+	narrativeDiv = document.getElementById("narrativeBox");
+	narrativeDiv.innerHTML += narrativeString+"<br>";
+	narrativeDiv.scrollTop = narrativeDiv.scrollHeight;
 }
 
 /**
@@ -54,7 +54,7 @@ function addToLog( logString ) {
  * @param {string} debugString Text to add to log / story box.
  */
 function debug( debugString ) {
-	if( debuging ) addToLog( "<font color=red>"+debugString+"</font>" );
+	if( debuging ) addToNarrative( "<font color=red>"+debugString+"</font>" );
 }
 
 /**
@@ -62,7 +62,7 @@ function debug( debugString ) {
  * @param {string} debugString Text to add to log / story box.
  */
 function serverDebug( debugString ) {
-	if( serverDebuging ) addToLog( "<font color=orange>"+debugString+"</font>" );
+	if( serverDebuging ) addToNarrative( "<font color=orange>"+debugString+"</font>" );
 }
 
 /**
@@ -73,32 +73,32 @@ function serverDebug( debugString ) {
 function userAction( actionString ) {
 	if( actionString == "debugon" ) {
 		debuging = true;
-		addToLog( "<br><strong>"+actionString+"</strong>" );
-		addToLog( "Debug on" );
+		addToNarrative( "<br><strong>"+actionString+"</strong>" );
+		addToNarrative( "Debug on" );
 	} else if( actionString == "debugoff" ) {
 		debuging = false;
-		addToLog( "<br><strong>"+actionString+"</strong>" );
-		addToLog( "Debug off" );
+		addToNarrative( "<br><strong>"+actionString+"</strong>" );
+		addToNarrative( "Debug off" );
 	} else if( actionString == "serverdebugon" ) {
 		serverDebuging = true;
-		addToLog( "<br><strong>"+actionString+"</strong>" );
-		addToLog( "Server debug on" );
+		addToNarrative( "<br><strong>"+actionString+"</strong>" );
+		addToNarrative( "Server debug on" );
 	} else if( actionString == "serverdebugoff" ) {
 		serverDebuging = false;
-		addToLog( "<br><strong>"+actionString+"</strong>" );
-		addToLog( "Server debug off" );
+		addToNarrative( "<br><strong>"+actionString+"</strong>" );
+		addToNarrative( "Server debug off" );
 	} else if( actionString == "debugall" ) {
 		serverDebuging = true;
 		debuging = true;
-		addToLog( "<br><strong>"+actionString+"</strong>" );
-		addToLog( "All debugging on" );
+		addToNarrative( "<br><strong>"+actionString+"</strong>" );
+		addToNarrative( "All debugging on" );
 	} else if( actionString == "debugnone" ) {
 		serverDebuging = false;
 		debuging = false;
-		addToLog( "<br><strong>"+actionString+"</strong>" );
-		addToLog( "All debugging off" );
+		addToNarrative( "<br><strong>"+actionString+"</strong>" );
+		addToNarrative( "All debugging off" );
 	} else {
-		addToLog( "<br><strong>"+actionString+"</strong>" );
+		addToNarrative( "<br><strong>"+actionString+"</strong>" );
 		//userActionList.push( actionString );
 		//userActionListHistoryCount += 1;
 	}

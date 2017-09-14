@@ -86,10 +86,10 @@ function getEntity( $id, $location = null, $type = null, $silent = false ) {
 		$result['name'] = strtok($result['name'], ';');
 		getExtendedData( $result );
 	} else 	if( $result && $result->num_rows > 1 ) {
-		if( !$silent ) addLogToXML("Which $type do you mean? " . listOfEntities( $result ) );
+		if( !$silent ) addNarrativeToXML("Which $type do you mean? " . listOfEntities( $result ) );
 		$result = false;
 	} else if( $result && $result->num_rows == 0 ) {
-		if( !$silent ) addLogToXML("That $type isn't here.");
+		if( !$silent ) addNarrativeToXML("That $type isn't here.");
 		$result = false;
 	}
 
@@ -195,7 +195,7 @@ function moveUser($exit) {
 	if( $passLock = passesLock( $exit ) &&  !is_null($exit['link']) &&
 	    $result = moveEntity( $user, $exit['link'] ) ) {
 		if( isset( $exit['success'] ) ) {
-			addLogToXML( $exit['success'] );
+			addNarrativeToXML( $exit['success'] );
 		}
 		
 		if ( isset( $exit['osuccess'] ) ) {
@@ -212,9 +212,9 @@ function moveUser($exit) {
 		insertLog("user", $_SESSION['userID'], $_SESSION['location'], $enterMessage );
 	} else if( !$passLock ) {
 		if( isset( $exit['fail'] ) ) {
-			addLogToXML( $exit['fail'] );
+			addNarrativeToXML( $exit['fail'] );
 		} else {
-			addLogToXML("{$exit['name']} is locked.");
+			addNarrativeToXML("{$exit['name']} is locked.");
 		
 		}
 		
@@ -223,7 +223,7 @@ function moveUser($exit) {
 				$_SESSION['username'] .  $exit['ofail'] );		
 		}
 	} else if ( is_null($exit['link']) ) {
-		addLogToXML("That exit doesn't lead anywhere.");
+		addNarrativeToXML("That exit doesn't lead anywhere.");
 		$result = false;
 	}
 		

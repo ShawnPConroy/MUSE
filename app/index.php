@@ -56,7 +56,7 @@ $skin = $_REQUEST['skin'] ? $_REQUEST['skin'] : "ModernWhite";
 		</ul>
 	</div>
 	
-	<div id="log">
+	<div id="narrativeBox">
 	You wake up suddenly and look around.<br>
 	</div>
 	

@@ -80,12 +80,12 @@ function addTextElement( $object, $text ) {
 
 
 /**
- * Append message as log to XML response
+ * Append message as narrative to XML response
  * 
  * @param unknown $message
  */
-function addLogToXML ($message) {
-	addTextElement( "log", $message);
+function addNarrativeToXML($message) {
+	addTextElement( "narrative", $message);
 }
 
 /**

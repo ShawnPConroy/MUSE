@@ -55,7 +55,7 @@ function createExit( $locationId, $exitName, $toId = null, $entranceName = null 
 	$result = createEntity( $exitName, $locationId, "exit" );
 
 	if( $result ) {
-		addLogToXML("Created exit $exitName.");
+		addNarrativeToXML("Created exit $exitName.");
 		if( !is_null($toId) ) {
 			$result = linkExit( $muse['db']->insert_id, $toId );
 				
@@ -127,9 +127,9 @@ function dropEntity( $entity ) {
 	
 	if( $result = moveEntity( $entity, $_SESSION['location'] ) ) {
 		if( isset( $entity['drop'] ) ) {
-			addLogToXML( $entity['drop'] );
+			addNarrativeToXML( $entity['drop'] );
 		} else {
-			addLogToXML("Dropped ". $entity['name'] );
+			addNarrativeToXML("Dropped ". $entity['name'] );
 		}
 		
 		if ( isset( $entity['odrop'] ) ) {
@@ -152,7 +152,7 @@ function dropEntity( $entity ) {
  * change. Also, if $location is someone's user ID it will be a whisper only that person
  * can hear.
  *
- * @param String $type Usually 'user', as in log message for and about users. Rather than 'server' for admin logs?
+ * @param String $type Usually 'user', as in log message for and about users. Rather than 'admin' for admin logs?
  * @param int $userID User ID tied to the log.
  * @param int $location Location ID for that the log is relevant for.
  * @param String $message The message, including droped, says taken, et cetera.
@@ -243,9 +243,9 @@ function setExtendedData( $entity, $name, $value ) {
 		$result = $muse['db']->query($sql);
 		
 		if( $result ) {
-			addLogToXML("Updated $name on {$entity['name']}.");
+			addNarrativeToXML("Updated $name on {$entity['name']}.");
 		} else {
-			addLogToXML("Failed to set $name.");
+			addNarrativeToXML("Failed to set $name.");
 		}
 	} else {
 		// Insert new data
@@ -255,9 +255,9 @@ function setExtendedData( $entity, $name, $value ) {
 		addServerMessageToXML( $sql );
 		$result = $muse['db']->query($sql);
 		if( $result ) {
-			addLogToXML("Set $name on {$entity['name']}.");
+			addNarrativeToXML("Set $name on {$entity['name']}.");
 		} else {
-			addLogToXML("Failed to set $name.");
+			addNarrativeToXML("Failed to set $name.");
 		}
 	}
 
@@ -277,9 +277,9 @@ function takeEntity( $entity ) {
 
 	if( $result = moveEntity( $entity, $_SESSION['userID'] ) ) {
 		if( isset( $entity['success'] ) ) {
-			addLogToXML( $entity['success'] );
+			addNarrativeToXML( $entity['success'] );
 		} else {
-			addLogToXML("You took ". $entity['name'] );
+			addNarrativeToXML("You took ". $entity['name'] );
 		}
 
 		if ( isset( $entity['osuccess'] ) ) {

@@ -11,7 +11,7 @@
  * Process user's create request. ("@create Object Name")
  *
  * Cuts off the @create, and creates and object with that name,
- * in user's inventory. Adds action to user log.
+ * in user's inventory. Adds action to narrative.
  * 
  * @param string $actionRequest The user's request, starting with @create.
  * @returns void
@@ -20,10 +20,10 @@
 function userActionCreate( $actionRequest ) {
 	$name = substr( $actionRequest, 8 );
 	if( createEntity( $name,  $_SESSION['userID'], "object" ) ) {
-		addLogToXML("Created $name.");
+		addNarrativeToXML("Created $name.");
 		addTextElement("inventory", $name);
 	} else {
-		addLogToXML("Failed to create $name.");
+		addNarrativeToXML("Failed to create $name.");
 	}
 }
 
@@ -31,7 +31,7 @@ function userActionCreate( $actionRequest ) {
  * Changes the ownership field of the object.
  * 
  * Cut off the @chown, parse out the object name and new owner's name.
- * Then get info and call changeOwner(). Update user log.
+ * Then get info and call changeOwner(). Update user narrative.
  *
  * @param string $actionRequest The user request starting with @chown.
  * @return void
@@ -49,11 +49,11 @@ function userActionChangeOwner( $actionRequest ) {
 	if ( $item && $item['owner'] == $_SESSION['userID'] && $newOwner) {
 		changeOwner( $item['id'], $newOwner['id'] );
 	} else if ( !$item ) {
-		addLogToXML("Item not found.");
+		addNarrativeToXML("Item not found.");
 	} else if ( !$newOwner ) {
-		addLogToXML("Cannot find user.");
+		addNarrativeToXML("Cannot find user.");
 	} else {
-		addLogToXML("You don't own that.");
+		addNarrativeToXML("You don't own that.");
 	}
 	
 }
@@ -67,7 +67,7 @@ function userActionChangeOwner( $actionRequest ) {
  *	@desc object name = Object's description.
  *
  * Tokenize the string and set the description field.
- * Add success to user log.
+ * Add success to narrative.
  *
  * @param string $actionRequest The user request starting with @desc.
  * @return void
@@ -82,24 +82,24 @@ function userActionDescribe( $actionRequest ) {
 		
 		if( $name == "me" ) {
 			setEntityField("description", $_SESSION['userID'], $description );
-			addLogToXML("Described $name.");
+			addNarrativeToXML("Described $name.");
 		} else if ( $name == "here" ) {
 			setEntityField("description", $_SESSION['location'], $description );
-			addLogToXML("Described $name.");
+			addNarrativeToXML("Described $name.");
 		} else {		
 			// Find item & apply description
 			$entity = getEntity( $name );
 		
 			if( $entity ) {
 				if ( setEntityField("description", $entity['id'], $description ) ) {
-					addLogToXML("Described $name.");
+					addNarrativeToXML("Described $name.");
 				} else {
-					addLogToXML("Failed to describe {$entity['name']}.");
+					addNarrativeToXML("Failed to describe {$entity['name']}.");
 				}
 			}
 		}
 	} else {
-		addLogToXML("Did you mean '@desc object = description'?");
+		addNarrativeToXML("Did you mean '@desc object = description'?");
 	}
 	
 	return;
@@ -128,16 +128,16 @@ function userActionDig( $actionRequest ) {
 		$roomID = createEntity( $roomName, null, 'room' );
 		
 		if( $roomID ) {
-			addLogToXML("Dug.");
+			addNarrativeToXML("Dug.");
 			if( !empty($exitTo) && !empty($entranceFrom) 
 				&& createExit( $_SESSION['location'], $exitTo, $roomID, $entranceFrom ) ) {
 				//addLogToXML("Rooms linked");
 			} else if ( !empty($exitTo) && !empty($entranceFrom) ) {
-				addLogToXML("Room link failed.");
+				addNarrativeToXML("Room link failed.");
 			}
 			userActionFullUpdate( $_SESSION['location'], true );
 		} else  {
-			addLogToXML("Dig failed.");
+			addNarrativeToXML("Dig failed.");
 		}
 	
 	}
@@ -162,10 +162,10 @@ function userActionDestroy( $actionRequest ) {
 	
 	if( $entity ) {
 		if( destroyEntity( $entity ) ) {
-			addLogToXML("Destroyed {$entity['name']}.");
+			addNarrativeToXML("Destroyed {$entity['name']}.");
 			userActionFullUpdate( $_SESSION['location'], true );
 		} else {
-			addLogToXML("Failed to destroy {$entity['name']}.");
+			addNarrativeToXML("Failed to destroy {$entity['name']}.");
 		}
 	}
 	
@@ -188,17 +188,17 @@ function userActionLink( $actionRequest ) {
 	$room = getEntity( $roomName, true, "room" );
 	
 	if( !$exit ) {
-		addLogToXML("No such exist here.");
+		addNarrativeToXML("No such exist here.");
 	}
 	if ( !$room ) {
-		addLogToXML("No such room exists");
+		addNarrativeToXML("No such room exists");
 	}
 	
 	if( $exit && $room ) {
 		if( linkExit( $exit['id'], $room['id'] ) ) {
 			//addLogToXML("Linked exit '{$exit['name']}' to '{$room['name']}'.");
 		} else {
-			addLogToXML("Link failed.");
+			addNarrativeToXML("Link failed.");
 		}
 	}
 	
@@ -222,9 +222,9 @@ function userActionName( $actionRequest ) {
 	if( $object ) {
 		AddServerMessageToXML("----if 1");
 		if( setEntityField("name", $object['id'], $newName) ) {
-			addLogToXML("Name set.");
+			addNarrativeToXML("Name set.");
 		} else {
-			addLogToXML("Failed to name.");
+			addNarrativeToXML("Failed to name.");
 		}
 	}
 	addServerMessageToXML("--Done.");
@@ -256,7 +256,7 @@ function userActionOpen( $actionRequest ) {
 	if( createExit( $_SESSION['location'], $exitName, $exitTo['id'], $returnName ) ) {
 		userActionFullUpdate($_SESSION['location'], true );
 	} else {
-		addLogToXML("Exit failed to be created.");
+		addNarrativeToXML("Exit failed to be created.");
 	}
 	
 	return;

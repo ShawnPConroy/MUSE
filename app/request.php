@@ -14,7 +14,7 @@ function checkSignedIn() {
 	global $muse; // App settings & database
 	// Only let logged in people come through
 	if( !$_SESSION['signedIn'] ) {
-		addLogToXML("You have been signed out. Please <a href=\"signin.php\">sign in</a> to continue.");
+		addToXML("You have been signed out. Please <a href=\"signin.php\">sign in</a> to continue.");
 		echo $muse['xml']->saveXML();
 		exit();
 	}
@@ -56,7 +56,7 @@ if ( userAction( $muse['actionKeyword'], $muse['actionRequest'] ) ) {
 } else if ( userActionMove( $muse['actionRequest'] ) ) {
 } else if ( $muse['actionRequest'] != "update" ) {
 	// Give an error message only if user entered an action
-	addLogToXML("I'm not sure what you meant.");
+	addNarrativeToXML("I'm not sure what you meant.");
 }
 
 responseFinish();		// End and display client response

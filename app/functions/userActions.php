@@ -99,7 +99,7 @@ function userActionLook( $actionRequest ) {
 		if( !empty($players) ) {
 			$xml .= $players."<br>";
 		} else addServerMessageToXML("players empty");
-		addLogToXML( $xml );
+		addNarrativeToXML( $xml );
 	} else if ($actionRequest == "full-update") {
 		userActionFullUpdate( $_SESSION['location'] );
 	} else {
@@ -111,7 +111,7 @@ function userActionLook( $actionRequest ) {
 		// Could be an exit, a player, an object 
 		$entity = getEntity( $name ); 
 		if( $entity ) {
-			addLogToXML($entity['name']."<br>".$entity['description']);
+			addNarrativeToXML($entity['name']."<br>".$entity['description']);
 		}
 	}
 	
@@ -133,7 +133,7 @@ function userActionDrop( $actionRequest ) {
 		if( dropEntity ( $item ) ) {
 			userActionFullUpdate($_SESSION['location'], true); // true means silent
 		} else {
-			addLogToXML("Failed to drop.");
+			addNarrativeToXML("Failed to drop.");
 		}
 	}
 	return;
@@ -169,7 +169,7 @@ function userActionExamine( $actionRequest ) {
 				}
 			}
 		}
-		addLogToXML($response);
+		addNarrativeToXML($response);
 	}
 
 }
@@ -226,7 +226,7 @@ function userActionMove( $actionRequest ) {
 				userActionFullUpdate();
 			}
 			// If user fails lock
-				// addLogToXML( $exit['fail'] );
+				// addNarrativeToXML( $exit['fail'] );
 
 	}
 	return $result;
@@ -243,9 +243,9 @@ function userActionSay( $actionRequest ) {
 	$message = trim( strtok('') );
 	
 	if( insertLog("user", $_SESSION['userID'], $_SESSION['location'], $_SESSION['username'] ." says \"<span class='speech'>".$message."</span>\"") ) {
-		addLogToXML("Said.");
+		addNarrativeToXML("Said.");
 	} else {
-		addLogToXML("Said failed.");
+		addNarrativeToXML("Said failed.");
 	}
 	return;
 }
@@ -265,15 +265,15 @@ function userActionTake( $actionRequest ) {
 	if( $item ) {
 		// move entity to inventory
 		if( takeEntity( $item ) ) {
-			//addLogToXML( "Took {$item[name]}.");
+			//addNarrativeToXML( "Took {$item[name]}.");
 			userActionFullUpdate($_SESSION['location'], true); // true means silent
 		} else {
-			addLogToXML("Failed to take.");
+			addNarrativeToXML("Failed to take.");
 		}
 	} /* else if ( $item && $item ->num_rows > 1 ) {
-		addLogToXML("Which one do you mean? ".listOfEntities( $item ) );
+		addNarrativeToXML("Which one do you mean? ".listOfEntities( $item ) );
 	} else {
-		addLogToXML("You don't see that here.");
+		addNarrativeToXML("You don't see that here.");
 	} */
 	return;
 }
@@ -306,7 +306,7 @@ function userAction( $actionKeyword, $actionRequest ) {
 		userBuildActions( $actionRequest );
 	} else if( $actionKeyword == "QUIT" || $actionKeyword == "SIGNOUT" || $actionKeyword == "LOGOUT" ) {
 		// Needs to be made case sensitive
-		userAccountLogout();
+		userAccountSignOut();
 	} else {
 		$result = false;
 	}

@@ -70,7 +70,7 @@ function getLocationEntityByName( $name, $location ) {
 }
 
 /**
- * Get the log updates for the current location.
+ * Get the narrative updates for the current location.
  *
  * Gets the log update of all logged messages of type user, in the current location
  * and since the last update.
@@ -88,8 +88,8 @@ function getLogUpdates() {
 	AND timestamp > '{$_SESSION['lastUpdate']}'";
 	addServerMessageToXML( $sql );
 	$result = $muse['db']->query( $sql );
-	while( $result && $log = $result->fetch_assoc() ) {
-		addLogToXML( $log['message'] );
+	while( $result && $narrative= $result->fetch_assoc() ) {
+		addNarrativeToXML( $narrative['message'] );
 		$_SESSION['lastUpdate'] = $log['timestamp'];
 	}
 
