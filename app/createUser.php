@@ -2,7 +2,7 @@
 
 include './config.php';
 
-if( userAccountCreate( $_POST['username'], $_POST['password'] ) ) {
+if( userAccountSignUp( $_POST['username'], $_POST['password'] ) ) {
 	$_SESSION["errorMessage"] = "User created! Please sign in.";
 	header("Location: " . $muse['APP_URI'] . "index.php");
 } else {
@@ -15,13 +15,7 @@ if( userAccountCreate( $_POST['username'], $_POST['password'] ) ) {
 <html>
 <body>
 
-User is created. 
-
-<h1>Login</h1>
-<form action="view.php" method="post">
-<input type="text" name="name" value="<?php echo $_POST[name] ?>">
-<input type="submit">
-</form>
+Something went wrong. <a href="index.php">Please try again</a>.
 
 </body>
 
