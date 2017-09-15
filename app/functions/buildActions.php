@@ -22,6 +22,8 @@ function userActionCreate( $actionRequest ) {
 	if( createEntity( $name,  $_SESSION['userID'], "object" ) ) {
 		addNarrativeToXML("Created $name.");
 		addTextElement("inventory", $name);
+		insertLog("system", $_SESSION['userID'], $_SESSION['location'], "$_SESSION[userID] created $name");
+
 	} else {
 		addNarrativeToXML("Failed to create $name.");
 	}
@@ -129,11 +131,14 @@ function userActionDig( $actionRequest ) {
 		
 		if( $roomID ) {
 			addNarrativeToXML("Dug.");
+			insertLog("system", $_SESSION['userID'], $_SESSION['location'], "$_SESSION[userID] dug $roomName # $roomID");
 			if( !empty($exitTo) && !empty($entranceFrom) 
 				&& createExit( $_SESSION['location'], $exitTo, $roomID, $entranceFrom ) ) {
-				//addLogToXML("Rooms linked");
+				addNarrativeToXML("Rooms linked");
+				insertLog("system", $_SESSION['userID'], $_SESSION['location'], "$_SESSION[userID] linked to $roomName #$roomID");
 			} else if ( !empty($exitTo) && !empty($entranceFrom) ) {
 				addNarrativeToXML("Room link failed.");
+
 			}
 			userActionFullUpdate( $_SESSION['location'], true );
 		} else  {
@@ -196,7 +201,8 @@ function userActionLink( $actionRequest ) {
 	
 	if( $exit && $room ) {
 		if( linkExit( $exit['id'], $room['id'] ) ) {
-			//addLogToXML("Linked exit '{$exit['name']}' to '{$room['name']}'.");
+			addNarrativeToXML("Linked exit '{$exit['name']}' to '{$room['name']}'.");
+			insertLog("system", $_SESSION['userID'], $_SESSION['location'], "$_SESSION[userID] linked to $roomName # $roomID");
 		} else {
 			addNarrativeToXML("Link failed.");
 		}

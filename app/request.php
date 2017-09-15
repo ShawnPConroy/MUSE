@@ -14,7 +14,7 @@ function checkSignedIn() {
 	global $muse; // App settings & database
 	// Only let logged in people come through
 	if( !$_SESSION['signedIn'] ) {
-		addToXML("You have been signed out. Please <a href=\"signin.php\">sign in</a> to continue.");
+		addNarrativeToXML("You have been signed out. Please <a href=\"signin.php\">sign in</a> to continue.");
 		echo $muse['xml']->saveXML();
 		exit();
 	}

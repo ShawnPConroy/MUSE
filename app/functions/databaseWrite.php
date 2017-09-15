@@ -56,6 +56,7 @@ function createExit( $locationId, $exitName, $toId = null, $entranceName = null 
 
 	if( $result ) {
 		addNarrativeToXML("Created exit $exitName.");
+		//insertLog("system", $_SESSION['userID'], $_SESSION['location'], "$_SESSION[userID] created exit $exitName");
 		if( !is_null($toId) ) {
 			$result = linkExit( $muse['db']->insert_id, $toId );
 				
@@ -152,6 +153,7 @@ function dropEntity( $entity ) {
  * change. Also, if $location is someone's user ID it will be a whisper only that person
  * can hear.
  *
+ * 
  * @param String $type Usually 'user', as in log message for and about users. Rather than 'admin' for admin logs?
  * @param int $userID User ID tied to the log.
  * @param int $location Location ID for that the log is relevant for.
@@ -163,7 +165,11 @@ function insertLog( $type, $userID, $location, $message ) {
 	$message = $muse['db']->real_escape_string($message);
 	$sql = "INSERT INTO {$muse['DB_PREFIX']}_logs
 	(type, user_id, location, message) values ( '$type', '$userID', '$location', '$message' );";
-	addServerMessageToXML($sql);
+	
+	// Debug if sending client a message
+	if (isset($muse['xml'])) {
+		addServerMessageToXML($sql);
+	}
 	return $muse['db']->query( $sql );
 }
 

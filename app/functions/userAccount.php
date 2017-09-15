@@ -23,6 +23,7 @@ function userAccountSignUp( $username, $password ) {
 	
 	$result = $muse['db']->query("INSERT INTO {$muse['DB_PREFIX']}_users
 				(entity_id, password) values ( '".$muse['db']->insert_id."', MD5('$password'));");
+	insertLog("system", $_SESSION['userID'], 0, "New user sign up: $username");
 	return( $result );
 }
 
@@ -53,6 +54,7 @@ function userAccountSignIn() {
 		$_SESSION['userID'] = $user['id'];
 		$_SESSION['location'] = $user['location'];
 		$_SESSION['lastUpdate'] = date( 'Y-m-d H:i:s' );
+		insertLog("system", $_SESSION['userID'], 0, "User sign in: $_SESSION[username]");
 	} else {
 		$_SESSION['errorMessage'] = "Your username and password combination did not match any user we have. Please try again.";
 		header("Location: " . $muse['APP_URI'] . "index.php");
@@ -65,7 +67,7 @@ function userAccountSignIn() {
  */
 function userAccountSignOut() {
 	session_destroy();
-	addLogToXML("You have quit. Good bye.");
+	addNarrativeToXML("You have quit. Good bye.");
 }
 	
 

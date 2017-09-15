@@ -36,7 +36,7 @@ function addLocationEntitiesToXML( $location, $tag = null ) {
 
 
 /**
- * Adds a text node to response.
+ * Adds a text node to response. Checks if a response is active.
  *
  * @param string $object Node type to create.
  * @param string $text Text message.
