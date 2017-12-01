@@ -63,8 +63,26 @@ For the commands that have been included in MUSE, I have linked to a larger desc
 
 In university I toyed with someone's PennMUSH system and thought it was very amusing. It's something I kept coming back to year after year. In 2012/2013 I started to create MUSE. I went through several iterations of the name (World Builder, HoloPage, phpMUSH, HoloText) before settling on MUSE.
 
-There are several MU* engines, including [PennMUSH](http://www.pennmush.org/) and even [Evennia](http://www.evennia.com/), but they all seem to require you to install as a service, which is not compatible with most shared hosting plans. Also, these services can sometimes be tempermental if the server freezes, reboots or is upgraded.
+There are several MU* engines, including [PennMUSH](http://www.pennmush.org/) and even [Evennia](http://www.evennia.com/), but they all seem to require you to install as a service, which is not compatible with most shared hosting plans. Also, these services can sometimes be tempermental if the server freezes, reboots or is upgraded. [RanvierMUD](http://ranviermud.com/) looks like a particularly nice system, but still runs as a background service.
 
 Other apps like [MUD Portal](http://www.mudportal.com/) or [PHudBase-WebMud](http://www.phudbase.com/webmud.php) are web clients that connect to the above engines.
 
 MUSE, on the other hand, is the complete package. Admins don't need to maintain the software, and users don't need to use any tools. Just show up and sign in. It works right in the browser.
+
+## Why JavaScript, PHP and MySQL based solution?
+I've been looking for MU-like experience that is web based for a while. One that has a web client frontend and a backend that runs on Apache or similar services.
+
+A MUD/MUSH/MU* is a very simple thing at it's core. Over the past 15 years I have periodically installed PennMUSS and enjoyed using it.
+The target audience of this application is one underserved. It's someone who wants a MU*-like experience, but:
+
+* Does not want the hassle of preservering data during system moves or formats
+* Does not want to have to reconfigure the system or network during changes
+* Portable across system architectures and platforms
+* Doesn't want to signin one day 5 years from now, find it hasn't run, and needs to trouble shoot
+* Doesn't want to have to explain to friends how to download a client and connect ^1
+* Doesn't want to pay for a server that allows you to run background tasks
+* Possibly doesn't have system admin experience, or is just too lazy.
+
+Basically, a more casual experience. Something that has a lower barrier of entry in terms of technical skill, cost or time. There are ways to avoid any one or two of these, but not reduce all three enough. (Note, ^1 can be accomplished by a web client connected to any backend.)
+
+I choose this because PHP is very portable and takes less configurations to work than most anything else. The code is on GitHub and your can test it out using this demo server.
